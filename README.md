@@ -1,3 +1,30 @@
+# linkedinlearningsample
+
+Hooking VS Code project to an existing github repo
+
+    After opening a new folder in VS code, click on init git icon under Code-Repo icon, which creates a local git repo and then do the following to connect local workspace to github repo
+        git remote add origin https://github.com/yadalis/RODashboard.git
+        git pull origin master
+        git branch --set-upstream-to=origin/Master Master
+
+    WARN: If you happen to have the remote repo created on Github with some files usually README.md, and you are tyring to connect that to your local repo and your local repo also contains README.md file, then you will see the message "fatal: refusing to merge unrelated histories", then issue pull command with --allow-unrelated-histories option like  
+        git pull origin master --allow-unrelated-histories, this will produce the message about the conflicts in README.md file.
+
+                 * branch            master     -> FETCH_HEAD
+                Auto-merging README.md
+                CONFLICT (add/add): Merge conflict in README.md
+                Automatic merge failed; fix conflicts and then commit the result.
+
+        Then click on -- Accept Changes link on the conflcts view which shows the comparision between remote READMNE.md file and local README.md file, usually in Green and Blue colors, once you are done with the merge then issue the below commands again
+
+                git remote add origin https://github.com/yadalis/RODashboard.git
+                git pull origin master
+                git branch --set-upstream-to=origin/Master Master
+        
+        and then onwards you can start check in and check outs....
+
+git remote -v -  to check the git repo name
+
 # Elm App
 
 This project is bootstrapped with [Create Elm App](https://github.com/halfzebra/create-elm-app).
@@ -863,13 +890,3 @@ GitHub Pages doesn’t support routers that use the HTML5 `pushState` history AP
 ## IDE setup for Hot Module Replacement
 
 Remember to disable [safe write](https://webpack.github.io/docs/webpack-dev-server.html#working-with-editors-ides-supporting-safe-write) if you are using VIM or IntelliJ IDE, such as WebStorm.
-# linkedinlearningsample
-
-Hooking VS Code project to an existing github repo
-
-    After opening a new folder in VS code, click on init git icon under Code-Repo icon, which creates a local git repo and then do the following to connect local workspace to github repo
-        git remote add origin https://github.com/yadalis/RODashboard.git
-        git pull origin master
-        git branch --set-upstream-to=origin/Master Master
-
-git remote -v -  to check the git repo name
