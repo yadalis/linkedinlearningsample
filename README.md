@@ -2,10 +2,18 @@
 
 Hooking VS Code project to an existing github repo
 
+    install git for windows from https://git-scm.com/download/win
+    then do git clone <github-repo-url.git>
+
+    git config --global user.email "suresh.yadali@gmail.com"
+    git config --global user.name "Suresh Yadali"
+    
+
     After opening a new folder in VS code, click on init git icon under Code-Repo icon, which creates a local git repo and then do the following to connect local workspace to github repo
         git remote add origin https://github.com/yadalis/RODashboard.git
         git pull origin master
         git branch --set-upstream-to=origin/Master Master
+
 
     WARN: If you happen to have the remote repo created on Github with some files usually README.md, and you are tyring to connect that to your local repo and your local repo also contains README.md file, then you will see the message "fatal: refusing to merge unrelated histories", then issue pull command with --allow-unrelated-histories option like  
         git pull origin master --allow-unrelated-histories, this will produce the message about the conflicts in README.md file.
