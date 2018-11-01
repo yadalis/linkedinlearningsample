@@ -14,9 +14,6 @@ sumWithOne =
 toUpperLambda =
     (\str -> String.toUpper str)
 
-list =
-    1 :: [2] ++ [3]
-
 main = 
     --view init
 
@@ -24,13 +21,9 @@ main =
     --     |> String.toUpper
     --     |> view
 
-    --init
+    init
         --|> toUpperLambda
-        --|> view
-
-    list
-        |> String.fromInt
-        |> text
+        |> view
 
 -- answer =
 --     "Because its great !"
@@ -59,10 +52,10 @@ init =
 --             ++ .answer model
 --         )
 
--- view {question, answer} =
---     text 
---         ("Question: "
---             ++ question
---             ++ " Answer: "
---             ++ answer
---         )
+view {question, answer} =
+    text 
+        ("Question: "
+            ++ question
+            ++ " Answer: "
+            ++ answer
+        )
