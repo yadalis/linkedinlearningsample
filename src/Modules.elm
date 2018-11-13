@@ -1,6 +1,6 @@
 module Main exposing (..)
 
-import Html exposing (..)
+import Html exposing (text)
 import Maybe
 --import Data.Difficulty as SSS
 --import Data.Question as QQQ
@@ -25,16 +25,15 @@ init =
         -- this works too, we can treat type aliases as a contructor funtion
         difficultLevel = defaultDiffcultyLevel
         ,questions = [
-            Question "A question" ["A1","A2","A3","A4","A5"] "A5"  Nothing 
-            ,Question "B question" ["B1","B2","B3","B4","B5"] "B3"  Nothing 
-            ,Question "D question" ["D1","D2","D3","D4","D5"] "B1"  Nothing 
-            -- ,Question (Nothing) "B question" "A" ["B1","B2","B3"]
-            -- ,Question (Just "cccccccccccccccccccccccccccccccccccccccccccccccccC3") "C question" "A" ["C1","C2","C3"]
+            Question  (Just "aaaaaA2") "A question" "A" ["A1","A2","A3"]
+            ,Question (Nothing) "B question" "A" ["B1","B2","B3"]
+            ,Question (Just "cccccccccccccccccccccccccccccccccccccccccccccccccC3") "C question" "A" ["C1","C2","C3"]
         ]
     }
 
 main = 
     view init
+    
 
 -- unboxUserResponseValue userResponse - 1st way
 --     =   Maybe.withDefault "there is no answer yet!" userResponse
@@ -48,15 +47,11 @@ main =
 --                         value
 
 --parseStringToInteger: String -> Result String Int
--- parseStringToInteger stringValue
---      = String.toInt stringValue
+parseStringToInteger stringValue
+     = String.toInt stringValue
 
 view {questions} =
-    -- questions
-    --     |> List.map questionView
-    --     |> String.join (",")
-    --     |> text
-
-    div []
-        (questions
-          |> List.map questionView)       
+    questions
+        |> List.map questionView
+        |> String.join (",")
+        |> text
