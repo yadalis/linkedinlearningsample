@@ -2,16 +2,16 @@ module View.Question exposing (questionView)
 
 import Data.Question exposing (Question)
 import View.Button exposing (btn)
-import Html exposing (div, text, Html)
-
+import Html exposing (div, text, Html, input)
  
-questionView: Question -> Html msg
-questionView {question, answerChoices} =
+questionView:  (String -> msg) -> Question -> Html msg
+questionView msg  {question, incorrect} =
     div []
         [
+
             text question
             ,div []
-                (answerChoices
-                    |> List.map btn
+                (incorrect
+                    |> List.map(\a -> btn (msg a) a)
                     |> List.intersperse (text "  ") )
         ]
