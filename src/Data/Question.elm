@@ -6,4 +6,5 @@ type alias Question
         ,question : String
         ,correct : String
         ,incorrect: List String
+        ,isCorrect : String
     }
