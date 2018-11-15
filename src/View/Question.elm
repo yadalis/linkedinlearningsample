@@ -8,10 +8,20 @@ questionView:  (String -> msg) -> Question -> Html msg
 questionView msg {question, incorrect, isCorrect} =
     let
         str = 
-            if (isCorrect == "Nothing") then
-                ""
-            else
-                isCorrect
+            case isCorrect of -- this is when isCorrect is a Maybe Bool type
+                Just val ->
+                    if not val then
+                        "No"
+                    else
+                        "Yes"
+            
+                Nothing ->
+                    String.toUpper "Not Answered yet"
+
+            -- if (isCorrect == "Nothing") then -- this is when isCorrect is a String type
+            --     ""
+            -- else
+            --     isCorrect
     in
 
     div []

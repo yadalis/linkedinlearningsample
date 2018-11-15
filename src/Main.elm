@@ -12,9 +12,9 @@ import Browser
 
 type alias Model
     = {
-            amount : Int
-            ,difficultLevel : DifficultyLevel
-            ,questions : Array Question
+        amount : Int
+        ,difficultLevel : DifficultyLevel
+        ,questions : Array Question
       }
 
 init: Model
@@ -23,10 +23,15 @@ init =
         amount = 5
         ,difficultLevel = defaultDiffcultyLevel
         ,questions = (Array.fromList
-            [   -- this style of constructing Question unlike record style, works too, we can treat type aliases as a contructor funtion
-                Question  Nothing "Is Elm the best UI Language "           "True"   ["True", "False"] "Nothing" --["A1","A2","A3","A4","A5"]
-                ,Question Nothing "Does Elm supports Native Mobile apps " "False"   ["True", "False"] "Nothing" --["B1","B2","B3","B4","B5"]
-                ,Question Nothing "Has Elm invented by MHC "               "False"  ["True", "False"] "Nothing" --["D1","D2","D3","D4","D5"]
+            [ 
+                  -- this style of constructing Question unlike record style, works too, we can treat type aliases as a contructor funtion
+            --     Question  Nothing "Is Elm the best UI Language "           "True"   ["True", "False"] "Nothing" --["A1","A2","A3","A4","A5"]
+            --     ,Question Nothing "Does Elm supports Native Mobile apps " "False"   ["True", "False"] "Nothing" --["B1","B2","B3","B4","B5"]
+            --     ,Question Nothing "Has Elm invented by MHC "               "False"  ["True", "False"] "Nothing" --["D1","D2","D3","D4","D5"]
+
+                Question  Nothing "Is Elm the best UI Language "           "True"   ["True", "False"] Nothing --["A1","A2","A3","A4","A5"]
+                ,Question Nothing "Does Elm supports Native Mobile apps " "False"   ["True", "False"] Nothing --["B1","B2","B3","B4","B5"]
+                ,Question Nothing "Has Elm invented by MHC "               "False"  ["True", "False"] Nothing --["D1","D2","D3","D4","D5"]
             ]
         )
     }
@@ -49,7 +54,9 @@ update msg model =
                 |> Array.get index
                 |> Maybe.map (\q -> {q |    
                                         userAnswer = Just userSelectedAnswer, 
-                                        isCorrect = if (q.correct == userSelectedAnswer) then "Yes" else "No" })
+                                        --isCorrect = if (q.correct == userSelectedAnswer) then "Yes" else "No" })  -- this is when isCorrect is a String type
+                                        isCorrect = if (q.correct == userSelectedAnswer) then Just True else Just False })  -- this is when isCorrect is a Maybe Bool type
+                
                 --|> Maybe.map (\q -> {q | isCorrect = if (q.correct == userSelectedAnswer) then "Yes" else "No" })
                 |> Maybe.map (\q -> Array.set index q model.questions)
                 |> Maybe.map (\arr -> {model | questions = arr})
@@ -74,11 +81,14 @@ view {amount, questions} =
                     |> Array.indexedMap(\i q -> questionView (Answer i) q) 
                     |> Array.toList)
                 --|> List.intersperse (text " ---  ")
+        --selectedDifficultyLevel = get "Easy"
     in
         div []
             [
                 input [ onInput UpdateAmount,  value (String.fromInt amount)][]
-                , select [onInput (ChangeDifficulty << get)]
+                --, select [onInput (ChangeDifficulty << get)] -- this one automatically sends selectedOptiontext value to get function
+                -- and feeds the response which is converted from string to DifficultyLevel in to ChangeDifficulty Message
+                ,select [onInput (\selectedOptionText -> ChangeDifficulty (get selectedOptionText)) ] -- You can do this too
                     (
                         List.map (\key -> option [] [text key]) keys
                     )
