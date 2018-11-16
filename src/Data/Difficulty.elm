@@ -1,4 +1,4 @@
-module Data.Difficulty exposing (DifficultyLevel, defaultDiffcultyLevel, keys, get)
+module Data.Difficulty exposing (DifficultyLevel, defaultDiffcultyLevel, keys, getConvertedDifficultyLevelFromString, convertDifficutlyLevelToString, isAnyDifficultLevel)
 
 type DifficultyLevel
     = 
@@ -8,7 +8,7 @@ type DifficultyLevel
         |Hard
 
 defaultDiffcultyLevel =
-    Medium
+    Any
 
 list : List (String, DifficultyLevel)
 list = 
@@ -27,10 +27,21 @@ keys =
         |> Tuple.first
 
 
-get : String -> DifficultyLevel
-get key = 
+getConvertedDifficultyLevelFromString : String -> DifficultyLevel
+getConvertedDifficultyLevelFromString key = 
     list
         |> List.filter (\(k, v) -> k == key)
         |> List.head
         |> Maybe.map Tuple.second
         |> Maybe.withDefault defaultDiffcultyLevel
+
+convertDifficutlyLevelToString difficutlyLevel =
+    list
+        |> List.filter(\(_, v) -> v == difficutlyLevel)
+        |> List.head
+        |> Maybe.map Tuple.first
+        |> Maybe.withDefault "Any"
+        |> String.toLower
+
+isAnyDifficultLevel difficutlyLevel =
+    difficutlyLevel == Any

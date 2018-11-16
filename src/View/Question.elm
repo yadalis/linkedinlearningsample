@@ -5,15 +5,15 @@ import View.Button exposing (btn)
 import Html exposing (div, text, Html, input)
  
 questionView:  (String -> msg) -> Question -> Html msg
-questionView msg {question, incorrect, isCorrect} =
+questionView msg {question, incorrect, isCorrect, correct, difficulty} =
     let
         str = 
             case isCorrect of -- this is when isCorrect is a Maybe Bool type
                 Just val ->
                     if not val then
-                        "No"
+                        "Incorrect"
                     else
-                        "Yes"
+                        "Correct"
             
                 Nothing ->
                     String.toUpper "Not Answered yet"
@@ -29,12 +29,17 @@ questionView msg {question, incorrect, isCorrect} =
             text question
             ,div []
                 (
-                    incorrect
+                    correct :: incorrect
+                        |> List.sort
                         |> List.map(\a -> btn (msg a) a)
-                        |> List.intersperse (text " ---  ")
+                        |> List.intersperse (text " ")
                 )
             ,div []
             [
                text "Answer: ",  text  str
+            ]
+            ,div []
+            [
+               text "Difficulty Level: ",  text  difficulty
             ]
         ]
