@@ -4,7 +4,7 @@ import registerServiceWorker from './registerServiceWorker';
 
 Elm.Main.init({
   node: document.getElementById('root'),
-  flags: 5
+  flags: 4
 });
 
 registerServiceWorker();

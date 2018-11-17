@@ -17,6 +17,7 @@ import Json.Decode as Decode
 import Json.Encode as Encode
 
 import Utils exposing (..)
+import Url.Builder exposing (..)
 
 type alias Model
     = {
@@ -69,14 +70,14 @@ update msg model =
                         |> convertDifficutlyLevelToString
                         |> String.toLower
                 
-                urlArgs =  String.fromInt model.amount ++ "&type=boolean" ++
+                difficutlyArg =
                             if isAnyDifficultLevel model.difficultLevel then
                                  ""
                             else
-                                "&difficulty=" ++ convertDifficutlyLevelToString model.difficultLevel
-
+                                convertDifficutlyLevelToString model.difficultLevel
             in
-                (model,  Http.get { url = "https://opentdb.com/api.php?amount=" ++ urlArgs, expect = Http.expectJson GetQuestions rootResultDecoder })
+                (model,  Http.get { url = crossOrigin "https://opentdb.com" ["api.php"] [int "amount" model.amount, string "type" "boolean", string "difficulty" difficutlyArg ]
+                , expect = Http.expectJson GetQuestions rootResultDecoder })
             
         GetQuestions triviaResult -> 
             let
@@ -113,13 +114,15 @@ update msg model =
             , Cmd.none)
     
         UpdateAmount amountString ->
-           (case (String.toInt amountString) of
+            (case (String.toInt amountString) of
                 Just val ->
                     {model | amount = val}
             
                 Nothing ->
-                    model
-           ,Cmd.none)
+                    {model | amount = 0}
+            ,sendMessage Start)
+        --    ({model | amount = Just amountString}
+        --    ,sendMessage Start)
 
         ChangeDifficulty newDiffcultyLevel ->
             -- the commented two lines also works to send Start message back to update function, but below code is the best option
@@ -156,4 +159,4 @@ view {amount, questions} =
 sendMessage : msg -> Cmd msg
 sendMessage msg =
     Task.succeed msg
-        |> Task.perform identity -- dont what is identity, find out.     
+        |> Task.perform identity -- dont know what is identity, find out.     
