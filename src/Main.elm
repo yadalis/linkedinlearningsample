@@ -10,26 +10,35 @@ import Element.Input as Input
 import Html exposing (Html)
 import Task
 
+isEmpty str =
+    String.isEmpty (String.trim (str) )
+
 getSelectedChannel requiredChannelIndex channelList =
     List.filter(\c -> c.index == requiredChannelIndex) channelList
                         |> List.head
+
+getFirstChannel channelList =
+    List.head channelList
+
+getFirstChannelName : Maybe Channel -> String
+getFirstChannelName channel =
+    case channel of
+        Just chnl -> chnl.name
+        Nothing -> "" --this can happen if the list is empty
+
+getSelectedChannelIndex selectedChannel =
+    case selectedChannel of
+        Just slctdChnl -> slctdChnl.index
+        Nothing -> ChannelSelectedIndex 1
                         
 getSelectedChannelName  selectedChannel = 
     case selectedChannel of
         Just slctdChnl -> slctdChnl.name
-        Nothing -> "INVALID CHANNEL..."
-
-indexValue : ChannelSelectedIndex -> Int
-indexValue (ChannelSelectedIndex index) =
+        Nothing -> "      " --this can happen if the list is empty or either for the first run, so when u call this function and gets empty, then call getFirstChannel|> getFirstChannelName
+            
+unboxSelectedIndexValue : ChannelSelectedIndex -> Int
+unboxSelectedIndexValue (ChannelSelectedIndex index) =
         index
-
--- defaultIndexValue : DefaultSelectedIndex -> Int
--- defaultIndexValue (DefaultSelectedIndex index) =
---         index
-
--- convertToChannelSelectedIndex : DefaultSelectedIndex -> ChannelSelectedIndex
--- convertToChannelSelectedIndex (DefaultSelectedIndex index) =
---     ChannelSelectedIndex index
 
 type alias Model
     = {
@@ -50,13 +59,9 @@ type alias ChatMessage =
 type ChannelSelectedIndex = 
     ChannelSelectedIndex Int
 
--- type DefaultSelectedIndex = 
---     DefaultSelectedIndex Int
-
 type Msg
     = ChannelSelected ChannelSelectedIndex
     | Start ChannelSelectedIndex
-    --| Start DefaultSelectedIndex
 
 init : () -> (Model, Cmd Msg)
 init _=
@@ -74,7 +79,6 @@ init _=
                     ,Channel "news and links" (ChannelSelectedIndex 6)
                     ,Channel "elm-discuss" (ChannelSelectedIndex 7)
                 ]
-            --["ellie", "elm-core", "elm-format", "elm-ui", "elm-discuss", "general", "news and links"]
             ,chatMessages = 
                             [
                                 { author = "augustin82", time = "6:09AM", text = "@gampleman I think you need to `clip` the `scrollable` element, and that that element should be larger than its parent, which (I think) means that the containing parent should have a fixed width" }
@@ -108,7 +112,9 @@ init _=
                                 ,ChatMessage "Indira Yadali" "10:30 PM" "At first glance, this might look like a lot of code, however note that it's really straightforward, and most of it is simply layout and styling attributes. At the bottom of the function, it's very clearly stated that we have vertically arranged header, messages and footer."
                                 ,ChatMessage "Indira Yadali" "10:30 PM" "At first glance, this might look like a lot of code, however note that it's really straightforward, and most of it is simply layout and styling attributes. At the bottom of the function, it's very clearly stated that we have vertically arranged header, messages and footer.Indira Yadali glance, this might look like a lot of code, however note that it's really straightforward, and most of it is simply layout and styling attributes. At the bottom of the function, it's very clearly stated that we have vertically arranged header, messages and footer"    
                             ]
-        }, sendMessage (Start (ChannelSelectedIndex 2)))
+        }
+        --, sendMessage (Start (ChannelSelectedIndex 2)))
+        , Cmd.none)
 
 update: Msg -> Model -> (Model, Cmd Msg)
 update msg model =
@@ -136,12 +142,10 @@ view  model =
     in
         layout [height fill] <|
             row [ height fill, width fill,Border.glow (rgb255 244 65 65) 1]
-                [ channelPanel model --(getSelectedChannelName model.selectedChannel)
+                [ channelPanel model
                 , chatPanel model
                 ]
 
---channelPanel : Model -> String -> Element Msg
---channelPanel {channelList} activeChannel =
 channelPanel : Model -> Element Msg
 channelPanel {channelList, selectedChannel} =
     let
@@ -156,9 +160,7 @@ channelPanel {channelList, selectedChannel} =
         channelEl {name, index} =
             let
                 newchannelAttrs = channelAttrs ++ [onClick (ChannelSelected index)] 
-                idx = case selectedChannel of
-                        Just val -> val.index
-                        Nothing -> (ChannelSelectedIndex 1)
+                selectedChannelIndex = getSelectedChannelIndex selectedChannel                
             in
                 el -- div
                     (
@@ -169,13 +171,13 @@ channelPanel {channelList, selectedChannel} =
                         --event though the list has other channels with the same name
                         --, but if you use the above IF which compares name with name, then the selecting a duplicate channel name will select all of those
                         --channels, which isnt desired....
-                        if index == idx then  -- this if stmt produces a list by combining the attrs from activeChannelAttrs and channelAttrs
+                        if index == selectedChannelIndex then  -- this if stmt produces a list by combining the attrs from activeChannelAttrs and channelAttrs
                             newchannelAttrs ++ activeChannelAttrs --concatinating two lists is just using ++
                         else
                             newchannelAttrs
                     )
                     
-                    <| text ("# " ++ name ++ " - " ++ String.fromInt (indexValue index) )
+                    <| text ("# " ++ name ++ " - " ++ String.fromInt (unboxSelectedIndexValue index) )
     in
     column
         [ height fill
@@ -204,66 +206,37 @@ messageEntry message =
 
 chatPanel : Model -> Element msg
 chatPanel model =
-    column [ height fill, width <| fillPortion 4]
-    [
-        -- column [width fill, paddingXY 20 10
-        --         , Border.widthEach { bottom = 1, top = 0, left = 0, right = 0 }
-        --         , Border.color <| rgb255 200 200 200]
-        --     [
-                row[width fill, paddingXY 20 10
+    let
+        expectedSelectedChannelName = getSelectedChannelName model.selectedChannel
+        selectedChannelName =
+            if isEmpty expectedSelectedChannelName then
+                getFirstChannel model.channelList
+                    |> getFirstChannelName
+            else
+                expectedSelectedChannelName
+    in
+        column [ height fill, width <| fillPortion 4]
+        [
+            row[width fill, paddingXY 20 10
                 , Border.widthEach { bottom = 1, top = 0, left = 0, right = 0 }
                 , Border.color <| rgb255 200 200 200]
-                 [el [] <| text (getSelectedChannelName model.selectedChannel)
-                -- [el [] <| text ( case model.selectedChannel of
-                --                          Just slctdChnl -> slctdChnl.name
-                --                          Nothing -> 
-                --                             case List.head model.channelList of
-                --                                 Just firstChannel -> firstChannel.name
-                --                                 Nothing -> ""
-                --                 )
+            [
+                el [] <| text selectedChannelName
                 , Input.button
-                    [ padding 5
-                    , alignRight
-                    , Border.width 1
-                    , Border.rounded 3
-                    , Border.color <| rgb255 200 200 200
-                    ]
-                    { onPress = Nothing
-                    , label = text "Search"
-                    }
+                [ padding 5
+                , alignRight
+                , Border.width 1
+                , Border.rounded 3
+                , Border.color <| rgb255 200 200 200
                 ]
-            -- ]
-        --,column [Background.color <| rgb255  204 201 201, height fill, padding 20,width fill] [ text "asdf"]
-        ,column [scrollbarY] 
+                { onPress = Nothing
+                , label = text "Search"
+                }
+            ]
+            ,column [scrollbarY] 
                 <| List.map messageEntry model.chatMessages
-
---Border.glow (rgb255 244 65 65) 3
-
-        -- ,wrappedRow [  ] [col1]
-        -- ,row [  ] [col1]
-        -- ,row [  ] [col1]
-        -- ,row [  ] [col1]
-        -- ,row [  ] [col1]
-        -- ,row [  ] [col1]
-        -- ,row [  ] [col1]
-        -- ,row [  ] [col1]
-        -- ,row [  ] [col1]
-        -- ,row [  ] [col1]
-            
-        -- column [ height fill, width fill,Border.glow (rgb255 244 65 65) 0 ]
-        --     [ 
-        --         col1
-        --         ,col1
-        --         ,col1
-        --         ,col1
-        --         ,col1
-        --         ,col1
-        --         ,col1
-        --         ,col1
-        --     ]
-          
-        ,column [ alignBottom, padding 20, width fill ]
-        [
+            ,column [ alignBottom, padding 20, width fill ]
+            [
                 row
                     [ spacingXY 2 0
                     , width fill
@@ -277,46 +250,15 @@ chatPanel model =
                         , Border.color <| rgb255 200 200 200
                         , mouseOver [ Background.color <| rgb255 86 182 139 ]
                         ]
-                      <|
+                        <|
                         text "+"
                     , el [ Background.color <| rgb255 255 255 255 ] none
                     ]
+            ]
         ]
-    ]
 
 -- this is just to send a message back in to update function when there are no side-effects needed and just a way to put the message back in to update function
 sendMessage : msg -> Cmd msg
 sendMessage msg =
     Task.succeed msg
-        |> Task.perform identity -- dont know what is identity, find out.   
-
--- channelPanel : Model -> Element msg
--- channelPanel {channelList} =
---     column
---         [ height fill
---         , width <| fillPortion 1
---         , paddingXY 0 10
---         , Background.color <| rgb255 255 114 114
---         , Font.color <| rgb255 255 255 255
---         ]
---         (List.map (\c -> el [paddingXY 15 5, alignLeft, Background.color <| rgb255 117 179 201, Font.bold] <| text ("#" ++ c )) channelList)
-
-
--- col1 =
---         column [paddingXY 50 10, width fill] 
---         [
---             row [width fill, Border.widthEach { bottom = 2, top = 0, left = 0, right = 0 }]
---             [
---                   el [ Font.bold  ] <| text "message.author"
---                 , el [ alignRight   ] <| text "message.time"
---             ]
---             ,el []
---                 <|
---                     paragraph [alignLeft, width fill, paddingEach { bottom = 0, top = 3, left = 0, right = 0 }, spacing 19] 
---                     [ 
---                         -- el [alignLeft, Border.dashed, Border.color <| rgb255 92 99 118, Border.width 0] <|
---                         --     text "@mgriffithHow many times did you How many times did you find yourself doing something totally reasonable that should be simple with CSS, only to find yourself getting derailed in bizarre ways? Maybe the text just won't align vertically, or you just can't seem to get the width of the elements right, or the style you've added doesn't seem to have any effect at all find yourself doing something totally reasonable that should be simple with CSS, only to find yourself getting derailed in bizarre ways? Maybe the text just won't align vertically, or you just can't seem to get the width of the elements right, or the style you've added doesn't seem to have any effect at all" 
---                     ]
---         ]
-
-
+        |> Task.perform identity -- dont know what is identity, find out. 
