@@ -17,21 +17,6 @@ getSelectedChannel requiredChannelIndex channelList =
     List.filter(\c -> c.index == requiredChannelIndex) channelList
                         |> List.head
 
-getFirstChannel channelList =
-    List.head channelList
-
-getFirstChannelName : Maybe Channel -> String
-getFirstChannelName channel =
-    case channel of
-        Just chnl -> chnl.name
-        Nothing -> "" --this can happen if the list is empty
-
-getFirstChannelMessages : Maybe Channel -> List ChatMessage
-getFirstChannelMessages channel = 
-    case channel of
-        Just chnl -> chnl.chatMessages
-        Nothing -> []
-
 getSelectedChannelIndex selectedChannel =
     case selectedChannel of
         Just slctdChnl -> slctdChnl.index
@@ -126,8 +111,8 @@ init _=
                     ,Channel "elm-discuss" (ChannelSelectedIndex (Just 7)) []
                 ]
         }
-        --, sendMessage (Start (ChannelSelectedIndex 2)))
-        , Cmd.none)
+        , sendMessage (Start (ChannelSelectedIndex (Just 2)) ) )
+        --, Cmd.none)
 
 update: Msg -> Model -> (Model, Cmd Msg)
 update msg model =
@@ -229,8 +214,6 @@ chatPanel model =
         selectedChannelName =
             if isEmpty expectedSelectedChannelName then
                 "Select a Channel to view messages"
-                -- getFirstChannel model.channelList
-                --     |> getFirstChannelName
             else
                 expectedSelectedChannelName
         
@@ -240,15 +223,8 @@ chatPanel model =
                 []
             else
                 expectedSelectedChannelMessages
-            -- if (List.length  expectedSelectedChannelMessages == 0 && model.selectedChannel == Nothing) then
-            --     getFirstChannel model.channelList
-            --         |> getFirstChannelMessages
-            -- else if (List.length  expectedSelectedChannelMessages == 0) then
-            --     []
-            -- else
-            --     expectedSelectedChannelMessages
     in
-        column [ height fill, width <| fillPortion 4]
+        column [ height fill, width <| fillPortion 6]
         [
             row[width fill, paddingXY 20 10
                 , Border.widthEach { bottom = 1, top = 0, left = 0, right = 0 }
@@ -268,9 +244,6 @@ chatPanel model =
             ]
             ,column [scrollbarY] 
                 <| List.map messageEntry selectedChannelNameMessages
-                        -- (case model.selectedChannel of
-                        --     Just val -> val.chatMessages
-                        --     Nothing -> getFirstChannelMessages (List.head model.channelList) )
             ,column [ alignBottom, padding 20, width fill ]
             [
                 row
