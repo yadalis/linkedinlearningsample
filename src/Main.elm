@@ -27,7 +27,8 @@ init _=
         {
             channelList = ["ellie", "elm-core", "elm-format", "elm-ui", "elm-discuss", "general", "news and links"]
             ,chatMessages = [ 
-                                ChatMessage "Suresh Yadali" "12:30 AM" "By the way, elm-ui does away with the rather troublesome concept of margins and padding that's found in CSS. Instead, you can specify internal padding for an element, and you can also specify the spacing between its child elements. I find this much more intuitive."
+                                ChatMessage  "Suresh Yadali" "12:30 AM" "By the way, elm-ui does away with the rather troublesome concept of margins and padding that's found in CSS. Instead, you can specify internal padding for an element, and you can also specify the spacing between its child elements. I find this much more intuitive."
+                                ,ChatMessage "Indira Yadali" "10:30 PM" "By At first glance, this might look like a lot of code, however note that it's really straightforward, and most of it is simply layout and styling attributes. At the bottom of the function, it's very clearly stated that we have vertically arranged header, messages and footer."
                                 ,ChatMessage "Indira Yadali" "10:30 PM" "At first glance, this might look like a lot of code, however note that it's really straightforward, and most of it is simply layout and styling attributes. At the bottom of the function, it's very clearly stated that we have vertically arranged header, messages and footer."
                                 ,ChatMessage "Indira Yadali" "10:30 PM" "At first glance, this might look like a lot of code, however note that it's really straightforward, and most of it is simply layout and styling attributes. At the bottom of the function, it's very clearly stated that we have vertically arranged header, messages and footer."
                                 ,ChatMessage "Indira Yadali" "10:30 PM" "At first glance, this might look like a lot of code, however note that it's really straightforward, and most of it is simply layout and styling attributes. At the bottom of the function, it's very clearly stated that we have vertically arranged header, messages and footer."
@@ -41,8 +42,7 @@ init _=
                                 ,ChatMessage "Indira Yadali" "10:30 PM" "At first glance, this might look like a lot of code, however note that it's really straightforward, and most of it is simply layout and styling attributes. At the bottom of the function, it's very clearly stated that we have vertically arranged header, messages and footer."
                                 ,ChatMessage "Indira Yadali" "10:30 PM" "At first glance, this might look like a lot of code, however note that it's really straightforward, and most of it is simply layout and styling attributes. At the bottom of the function, it's very clearly stated that we have vertically arranged header, messages and footer."
                                 ,ChatMessage "Indira Yadali" "10:30 PM" "At first glance, this might look like a lot of code, however note that it's really straightforward, and most of it is simply layout and styling attributes. At the bottom of the function, it's very clearly stated that we have vertically arranged header, messages and footer."
-                                ,ChatMessage "Indira Yadali" "10:30 PM" "At first glance, this might look like a lot of code, however note that it's really straightforward, and most of it is simply layout and styling attributes. At the bottom of the function, it's very clearly stated that we have vertically arranged header, messages and footer."
-                                ,ChatMessage "Indira Yadali" "10:30 PM" "At first glance, this might look like a lot of code, however note that it's really straightforward, and most of it is simply layout and styling attributes. At the bottom of the function, it's very clearly stated that we have vertically arranged header, messages and footer."
+                                ,ChatMessage "Indira Yadali" "10:30 PM" "At first glance, this might look like a lot of code, however note that it's really straightforward, and most of it is simply layout and styling attributes. At the bottom of the function, it's very clearly stated that we have vertically arranged header, messages and footer.Indira Yadali glance, this might look like a lot of code, however note that it's really straightforward, and most of it is simply layout and styling attributes. At the bottom of the function, it's very clearly stated that we have vertically arranged header, messages and footer"
                                 
                             ]
         }, Cmd.none)
@@ -57,8 +57,8 @@ main =
 
 view : Model -> Html Msg
 view  model =
-    layout [height fill  ] <|
-        row [ height fill, width fill,Border.glow (rgb255 244 65 65) 0 ]
+    layout [height fill] <|
+        row [ height fill, width fill,Border.glow (rgb255 244 65 65) 1]
             [ channelPanel model "elm-core"
             , chatPanel model
             ]
@@ -105,27 +105,50 @@ channelPanel {channelList} activeChannel =
             List.map channelEl channelList
 
 messageEntry message =
-                    column [ ] 
-                        
+                        column [paddingXY 50 10 ] 
                         [
-                            row [width fill , Border.widthEach { bottom = 1, top = 0, left = 0, right = 0 }] [
-                          el [ Font.bold ] <| text message.author
-                        , el [ Font.bold, alignRight ] <| text message.time ]
-                        , paragraph [alignLeft,  paddingEach { bottom = 0, top = 10, left = 0, right = 0 }] [ text message.text ]
-                        ]                    
-            -- column [ width fill, spacingXY 0 5 ]
-            --     [ 
-            --     ]
+                            row [ Border.widthEach { bottom = 1, top = 0, left = 0, right = 0 }, width fill, spaceEvenly]
+                            [
+                                  el [ Font.bold ] <| text message.author
+                                , el [ Background.color <| rgb255 209 79 79] <| text message.time
+                            ]
+                            ,
+                            paragraph [paddingEach { bottom = 0, top = 10, left = 0, right = 0 }, width fill, Font.alignLeft] 
+                            [ 
+                                 el [alignLeft,  Border.dotted, Border.color <| rgb255 92 99 118, Border.width 3, width fill] <| text message.text 
+                            ]
+                        ]
 
+
+-- col1 =
+--         column [paddingXY 50 10, width fill] 
+--         [
+--             row [width fill, Border.widthEach { bottom = 2, top = 0, left = 0, right = 0 }]
+--             [
+--                   el [ Font.bold  ] <| text "message.author"
+--                 , el [ alignRight   ] <| text "message.time"
+--             ]
+--             ,el []
+--                 <|
+--                     paragraph [alignLeft, width fill, paddingEach { bottom = 0, top = 3, left = 0, right = 0 }, spacing 19] 
+--                     [ 
+--                         -- el [alignLeft, Border.dashed, Border.color <| rgb255 92 99 118, Border.width 0] <|
+--                         --     text "@mgriffithHow many times did you How many times did you find yourself doing something totally reasonable that should be simple with CSS, only to find yourself getting derailed in bizarre ways? Maybe the text just won't align vertically, or you just can't seem to get the width of the elements right, or the style you've added doesn't seem to have any effect at all find yourself doing something totally reasonable that should be simple with CSS, only to find yourself getting derailed in bizarre ways? Maybe the text just won't align vertically, or you just can't seem to get the width of the elements right, or the style you've added doesn't seem to have any effect at all" 
+--                     ]
+--         ]
+        
 chatPanel : Model -> Element msg
-chatPanel {chatMessages}=
-    column [ height fill, width <| fillPortion 5]
+chatPanel model =
+    column [ height fill, width <| fillPortion 4]
     [
-        row [width fill, paddingXY 20 10
+        -- column [width fill, paddingXY 20 10
+        --         , Border.widthEach { bottom = 1, top = 0, left = 0, right = 0 }
+        --         , Border.color <| rgb255 200 200 200]
+        --     [
+                row[width fill, paddingXY 20 10
                 , Border.widthEach { bottom = 1, top = 0, left = 0, right = 0 }
                 , Border.color <| rgb255 200 200 200]
-            [
-                el [] <| text "Left"
+                [el [] <| text "Left"
                 , Input.button
                     [ padding 5
                     , alignRight
@@ -136,11 +159,39 @@ chatPanel {chatMessages}=
                     { onPress = Nothing
                     , label = text "Search"
                     }
-            ]
+                ]
+            -- ]
         --,column [Background.color <| rgb255  204 201 201, height fill, padding 20,width fill] [ text "asdf"]
-        ,column [ paddingXY 100 3, spacingXY 0 5, scrollbarY] <|
-                List.map messageEntry chatMessages
-        ,el [ alignBottom, padding 20, width fill ] <|
+        ,column [scrollbarY] 
+                <| List.map messageEntry model.chatMessages
+
+--Border.glow (rgb255 244 65 65) 3
+
+        -- ,wrappedRow [  ] [col1]
+        -- ,row [  ] [col1]
+        -- ,row [  ] [col1]
+        -- ,row [  ] [col1]
+        -- ,row [  ] [col1]
+        -- ,row [  ] [col1]
+        -- ,row [  ] [col1]
+        -- ,row [  ] [col1]
+        -- ,row [  ] [col1]
+        -- ,row [  ] [col1]
+            
+        -- column [ height fill, width fill,Border.glow (rgb255 244 65 65) 0 ]
+        --     [ 
+        --         col1
+        --         ,col1
+        --         ,col1
+        --         ,col1
+        --         ,col1
+        --         ,col1
+        --         ,col1
+        --         ,col1
+        --     ]
+          
+        ,column [ alignBottom, padding 20, width fill ]
+        [
                 row
                     [ spacingXY 2 0
                     , width fill
@@ -158,6 +209,7 @@ chatPanel {chatMessages}=
                         text "+"
                     , el [ Background.color <| rgb255 255 255 255 ] none
                     ]
+        ]
     ]
 
 
