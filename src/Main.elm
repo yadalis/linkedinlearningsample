@@ -26,24 +26,36 @@ getFirstChannelName channel =
         Just chnl -> chnl.name
         Nothing -> "" --this can happen if the list is empty
 
+getFirstChannelMessages : Maybe Channel -> List ChatMessage
+getFirstChannelMessages channel = 
+    case channel of
+        Just chnl -> chnl.chatMessages
+        Nothing -> []
+
 getSelectedChannelIndex selectedChannel =
     case selectedChannel of
         Just slctdChnl -> slctdChnl.index
-        Nothing -> ChannelSelectedIndex 1
+        Nothing -> ChannelSelectedIndex Nothing
                         
 getSelectedChannelName  selectedChannel = 
     case selectedChannel of
         Just slctdChnl -> slctdChnl.name
         Nothing -> "      " --this can happen if the list is empty or either for the first run, so when u call this function and gets empty, then call getFirstChannel|> getFirstChannelName
             
+getSelectedChannelMessages  selectedChannel = 
+    case selectedChannel of
+        Just slctdChnl -> slctdChnl.chatMessages
+        Nothing -> [] --this can happen if the list is empty or either for the first run, so when u call this function and gets empty, then call getFirstChannel|> getFirstChannelName
+            
 unboxSelectedIndexValue : ChannelSelectedIndex -> Int
 unboxSelectedIndexValue (ChannelSelectedIndex index) =
-        index
+        case index of
+            Just val -> val
+            Nothing -> 0
 
 type alias Model
     = {
         channelList : List Channel
-        , chatMessages : List ChatMessage
         , selectedChannel : Maybe Channel
     }
 
@@ -51,13 +63,14 @@ type alias Channel
     = {
         name : String
         ,index : ChannelSelectedIndex
+        , chatMessages : List ChatMessage
     }
 
 type alias ChatMessage =
     { author : String, time : String, text : String }
 
 type ChannelSelectedIndex = 
-    ChannelSelectedIndex Int
+    ChannelSelectedIndex (Maybe Int)
 
 type Msg
     = ChannelSelected ChannelSelectedIndex
@@ -71,47 +84,47 @@ init _=
             ,
             channelList = 
                 [
-                    Channel "elm-core" (ChannelSelectedIndex 1)
-                    ,Channel "elm-format" (ChannelSelectedIndex 2)
-                    ,Channel "elm-ui" (ChannelSelectedIndex 3)
-                    ,Channel "elm-discuss" (ChannelSelectedIndex 4)
-                    ,Channel "general" (ChannelSelectedIndex 5)
-                    ,Channel "news and links" (ChannelSelectedIndex 6)
-                    ,Channel "elm-discuss" (ChannelSelectedIndex 7)
+                    Channel "elm-core" (ChannelSelectedIndex (Just 1) )
+                        [
+                            ChatMessage  "Suresh Yadali" "12:30 AM" "By the way, elm-ui does away with the rather troublesome concept of margins and padding that's found in CSS. Instead, you can specify internal padding for an element, and you can also specify the spacing between its child elements. I find this much more intuitive."
+                            ,ChatMessage "Indira Yadali" "10:30 PM" "By At first glance, this might look like a lot of code, however note that it's really straightforward, and most of it is simply layout and styling attributes. At the bottom of the function, it's very clearly stated that we have vertically arranged header, messages and footer."
+                            ,ChatMessage "Indira Yadali" "10:30 PM" "At first glance, this might look like a lot of code, however note that it's really straightforward, and most of it is simply layout and styling attributes. At the bottom of the function, it's very clearly stated that we have vertically arranged header, messages and footer."
+                        ]
+                    ,Channel "elm-format" (ChannelSelectedIndex (Just 2)) 
+                        [
+                            ChatMessage "Indira Yadali" "10:30 PM" "At first glance, this might look like a lot of code, however note that it's really straightforward, and most of it is simply layout and styling attributes. At the bottom of the function, it's very clearly stated that we have vertically arranged header, messages and footer."
+                            ,ChatMessage "Indira Yadali" "10:30 PM" "At first glance, this might look like a lot of code, however note that it's really straightforward, and most of it is simply layout and styling attributes. At the bottom of the function, it's very clearly stated that we have vertically arranged header, messages and footer."
+                            ,ChatMessage "Indira Yadali" "10:30 PM" "At first glance, this might look like a lot of code, however note that it's really straightforward, and most of it is simply layout and styling attributes. At the bottom of the function, it's very clearly stated that we have vertically arranged header, messages and footer."
+                            ,ChatMessage "Indira Yadali" "10:30 PM" "At first glance, this might look like a lot of code, however note that it's really straightforward, and most of it is simply layout and styling attributes. At the bottom of the function, it's very clearly stated that we have vertically arranged header, messages and footer."
+                            ,ChatMessage "Indira Yadali" "10:30 PM" "At first glance, this might look like a lot of code, however note that it's really straightforward, and most of it is simply layout and styling attributes. At the bottom of the function, it's very clearly stated that we have vertically arranged header, messages and footer."
+                            ,ChatMessage "Indira Yadali" "10:30 PM" "At first glance, this might look like a lot of code, however note that it's really straightforward, and most of it is simply layout and styling attributes. At the bottom of the function, it's very clearly stated that we have vertically arranged header, messages and footer."
+                            ,ChatMessage "Indira Yadali" "10:30 PM" "At first glance, this might look like a lot of code, however note that it's really straightforward, and most of it is simply layout and styling attributes. At the bottom of the function, it's very clearly stated that we have vertically arranged header, messages and footer."
+                            ,ChatMessage "Indira Yadali" "10:30 PM" "At first glance, this might look like a lot of code, however note that it's really straightforward, and most of it is simply layout and styling attributes. At the bottom of the function, it's very clearly stated that we have vertically arranged header, messages and footer."
+                        ]
+                    ,Channel "elm-ui" (ChannelSelectedIndex (Just 3))
+                        [
+                            ChatMessage "Indira Yadali" "10:30 PM" "At first glance, this might look like a lot of code, however note that it's really straightforward, and most of it is simply layout and styling attributes. At the bottom of the function, it's very clearly stated that we have vertically arranged header, messages and footer."
+                            ,ChatMessage "Indira Yadali" "10:30 PM" "At first glance, this might look like a lot of code, however note that it's really straightforward, and most of it is simply layout and styling attributes. At the bottom of the function, it's very clearly stated that we have vertically arranged header, messages and footer."
+                            ,ChatMessage "Indira Yadali" "10:30 PM" "At first glance, this might look like a lot of code, however note that it's really straightforward, and most of it is simply layout and styling attributes. At the bottom of the function, it's very clearly stated that we have vertically arranged header, messages and footer."
+                            ,ChatMessage "Indira Yadali" "10:30 PM" "At first glance, this might look like a lot of code, however note that it's really straightforward, and most of it is simply layout and styling attributes. At the bottom of the function, it's very clearly stated that we have vertically arranged header, messages and footer."
+                            ,ChatMessage "Indira Yadali" "10:30 PM" "At first glance, this might look like a lot of code, however note that it's really straightforward, and most of it is simply layout and styling attributes. At the bottom of the function, it's very clearly stated that we have vertically arranged header, messages and footer."
+                            ,ChatMessage "Indira Yadali" "10:30 PM" "At first glance, this might look like a lot of code, however note that it's really straightforward, and most of it is simply layout and styling attributes. At the bottom of the function, it's very clearly stated that we have vertically arranged header, messages and footer."
+                        ]
+                    ,Channel "elm-discuss" (ChannelSelectedIndex (Just 4)) 
+                        [
+                            ChatMessage "Indira Yadali" "10:30 PM" "At first glance, this might look like a lot of code, however note that it's really straightforward, and most of it is simply layout and styling attributes. At the bottom of the function, it's very clearly stated that we have vertically arranged header, messages and footer."
+                            ,ChatMessage "Indira Yadali" "10:30 PM" "At first glance, this might look like a lot of code, however note that it's really straightforward, and most of it is simply layout and styling attributes. At the bottom of the function, it's very clearly stated that we have vertically arranged header, messages and footer.Indira Yadali glance, this might look like a lot of code, however note that it's really straightforward, and most of it is simply layout and styling attributes. At the bottom of the function, it's very clearly stated that we have vertically arranged header, messages and footer"    
+                        ]
+                    ,Channel "general" (ChannelSelectedIndex (Just 5)) []
+                    ,Channel "news and links" (ChannelSelectedIndex (Just 6)) 
+                        [
+                            ChatMessage  "Suresh Yadali" "12:30 AM" "By the way, elm-ui does away with the rather troublesome concept of margins and padding that's found in CSS. Instead, you can specify internal padding for an element, and you can also specify the spacing between its child elements. I find this much more intuitive."
+                            ,ChatMessage "Indira Yadali" "10:30 PM" "By At first glance, this might look like a lot of code, however note that it's really straightforward, and most of it is simply layout and styling attributes. At the bottom of the function, it's very clearly stated that we have vertically arranged header, messages and footer."
+                            ,ChatMessage "Indira Yadali" "10:30 PM" "At first glance, this might look like a lot of code, however note that it's really straightforward, and most of it is simply layout and styling attributes. At the bottom of the function, it's very clearly stated that we have vertically arranged header, messages and footer."
+
+                        ]
+                    ,Channel "elm-discuss" (ChannelSelectedIndex (Just 7)) []
                 ]
-            ,chatMessages = 
-                            [
-                                { author = "augustin82", time = "6:09AM", text = "@gampleman I think you need to `clip` the `scrollable` element, and that that element should be larger than its parent, which (I think) means that the containing parent should have a fixed width" }
-                                , { author = "u0421793", time = "6:22AM", text = "I’ve been trying to make a few links on a page in elm and elm-ui but I’ve not found a way to make it work because I haven’t found any examples of elm-ui which incorporate an anchor element" }
-                                , { author = "augustin82", time = "6:27AM", text = "@u0421793 what are you looking for exactly? do you have an Ellie where you've tried  doing some stuff?" }
-                                , { author = "icepac", time = "7:53 AM", text = "Anybody replied to @lango https://elmlang.slack.com/archives/C4F9NBLR1/p1541911789377400 About Animation vs Element ?" }
-                                , { author = "mgriffith", time = "8:00 AM", text = "You can use them together, for sure :smile: You just need to use `Element.htmlAttribute` to render the style attribute." }
-                                , { author = "duncan", time = "9:32 AM", text = "so ideally, it'd be nice to get the r,g,b,a components from a `Color` so that I could do the string interp (edited)" }
-                                , { author = "lango", time = "1:23 PM", text = "@mgriffith But that isn't really them 'working together' is it, its more they just happen to be together? For example, `elm-ui` has `background.gradient` but `elm-style-animation` only has `backgroundColor`. It's not clear to me how I could animation `elm-ui`'s `background.gradient` using `elm-animation`?" }
-                                , { author = "mgriffith", time = "4:28 PM", text = "@lango Oh, yeah I totally agree it isn’t seamless :smile: That’s why I’ve been putting a lot of time towards an API for animation for elm-ui.  But technically `elm-style-animation` and `elm-ui` can work together." }
-                                , { author = "eniac314", time = "6:49 AM", text = "It seems it it possible to press buttons without the event handler associated being fired when one clicks the thin area along the top border. In this example: https://ellie-app.com/3T4KLBKbnTQa1 it's possible to see the button moving without the counter increasing or decreasing. Is this due to the way I did the styling for the buttons? It seems to be related to the shadow (edited)" }
-                                , { author = "anthony.deschamps", time = "10:24 AM", text = "What's the most recent version of elm-ui/stylish-elephants that works on 0.18?" }
-                                , { author = "progger", time = "10:46 AM", text = "I've got some text that I'm laying out in a paragraph, and I want to put a link in there too.  Paragraph put the link on its own line though.  Shouldn't it all flow together?" }
-                                , { author = "progger", time = "11:22 AM", text = "Ha, I filed an issue about this back in oct.  Used my own workaround!" }
-                            ] ++ -- List concating -> produces new list with combined lists
-                            [ 
-                                ChatMessage  "Suresh Yadali" "12:30 AM" "By the way, elm-ui does away with the rather troublesome concept of margins and padding that's found in CSS. Instead, you can specify internal padding for an element, and you can also specify the spacing between its child elements. I find this much more intuitive."
-                                ,ChatMessage "Indira Yadali" "10:30 PM" "By At first glance, this might look like a lot of code, however note that it's really straightforward, and most of it is simply layout and styling attributes. At the bottom of the function, it's very clearly stated that we have vertically arranged header, messages and footer."
-                                ,ChatMessage "Indira Yadali" "10:30 PM" "At first glance, this might look like a lot of code, however note that it's really straightforward, and most of it is simply layout and styling attributes. At the bottom of the function, it's very clearly stated that we have vertically arranged header, messages and footer."
-                                ,ChatMessage "Indira Yadali" "10:30 PM" "At first glance, this might look like a lot of code, however note that it's really straightforward, and most of it is simply layout and styling attributes. At the bottom of the function, it's very clearly stated that we have vertically arranged header, messages and footer."
-                                ,ChatMessage "Indira Yadali" "10:30 PM" "At first glance, this might look like a lot of code, however note that it's really straightforward, and most of it is simply layout and styling attributes. At the bottom of the function, it's very clearly stated that we have vertically arranged header, messages and footer."
-                                ,ChatMessage "Indira Yadali" "10:30 PM" "At first glance, this might look like a lot of code, however note that it's really straightforward, and most of it is simply layout and styling attributes. At the bottom of the function, it's very clearly stated that we have vertically arranged header, messages and footer."
-                                ,ChatMessage "Indira Yadali" "10:30 PM" "At first glance, this might look like a lot of code, however note that it's really straightforward, and most of it is simply layout and styling attributes. At the bottom of the function, it's very clearly stated that we have vertically arranged header, messages and footer."
-                                ,ChatMessage "Indira Yadali" "10:30 PM" "At first glance, this might look like a lot of code, however note that it's really straightforward, and most of it is simply layout and styling attributes. At the bottom of the function, it's very clearly stated that we have vertically arranged header, messages and footer."
-                                ,ChatMessage "Indira Yadali" "10:30 PM" "At first glance, this might look like a lot of code, however note that it's really straightforward, and most of it is simply layout and styling attributes. At the bottom of the function, it's very clearly stated that we have vertically arranged header, messages and footer."
-                                ,ChatMessage "Indira Yadali" "10:30 PM" "At first glance, this might look like a lot of code, however note that it's really straightforward, and most of it is simply layout and styling attributes. At the bottom of the function, it's very clearly stated that we have vertically arranged header, messages and footer."
-                                ,ChatMessage "Indira Yadali" "10:30 PM" "At first glance, this might look like a lot of code, however note that it's really straightforward, and most of it is simply layout and styling attributes. At the bottom of the function, it's very clearly stated that we have vertically arranged header, messages and footer."
-                                ,ChatMessage "Indira Yadali" "10:30 PM" "At first glance, this might look like a lot of code, however note that it's really straightforward, and most of it is simply layout and styling attributes. At the bottom of the function, it's very clearly stated that we have vertically arranged header, messages and footer."
-                                ,ChatMessage "Indira Yadali" "10:30 PM" "At first glance, this might look like a lot of code, however note that it's really straightforward, and most of it is simply layout and styling attributes. At the bottom of the function, it's very clearly stated that we have vertically arranged header, messages and footer."
-                                ,ChatMessage "Indira Yadali" "10:30 PM" "At first glance, this might look like a lot of code, however note that it's really straightforward, and most of it is simply layout and styling attributes. At the bottom of the function, it's very clearly stated that we have vertically arranged header, messages and footer."
-                                ,ChatMessage "Indira Yadali" "10:30 PM" "At first glance, this might look like a lot of code, however note that it's really straightforward, and most of it is simply layout and styling attributes. At the bottom of the function, it's very clearly stated that we have vertically arranged header, messages and footer."
-                                ,ChatMessage "Indira Yadali" "10:30 PM" "At first glance, this might look like a lot of code, however note that it's really straightforward, and most of it is simply layout and styling attributes. At the bottom of the function, it's very clearly stated that we have vertically arranged header, messages and footer.Indira Yadali glance, this might look like a lot of code, however note that it's really straightforward, and most of it is simply layout and styling attributes. At the bottom of the function, it's very clearly stated that we have vertically arranged header, messages and footer"    
-                            ]
         }
         --, sendMessage (Start (ChannelSelectedIndex 2)))
         , Cmd.none)
@@ -160,7 +173,12 @@ channelPanel {channelList, selectedChannel} =
         channelEl {name, index} =
             let
                 newchannelAttrs = channelAttrs ++ [onClick (ChannelSelected index)] 
-                selectedChannelIndex = getSelectedChannelIndex selectedChannel                
+                expectedSelectedChannelIndex = getSelectedChannelIndex selectedChannel       
+                selectedChannelIndex = 
+                    if (expectedSelectedChannelIndex == ChannelSelectedIndex Nothing) then
+                        ChannelSelectedIndex Nothing
+                    else
+                        expectedSelectedChannelIndex
             in
                 el -- div
                     (
@@ -210,10 +228,25 @@ chatPanel model =
         expectedSelectedChannelName = getSelectedChannelName model.selectedChannel
         selectedChannelName =
             if isEmpty expectedSelectedChannelName then
-                getFirstChannel model.channelList
-                    |> getFirstChannelName
+                "Select a Channel to view messages"
+                -- getFirstChannel model.channelList
+                --     |> getFirstChannelName
             else
                 expectedSelectedChannelName
+        
+        expectedSelectedChannelMessages = getSelectedChannelMessages  model.selectedChannel
+        selectedChannelNameMessages =
+            if (model.selectedChannel == Nothing) then
+                []
+            else
+                expectedSelectedChannelMessages
+            -- if (List.length  expectedSelectedChannelMessages == 0 && model.selectedChannel == Nothing) then
+            --     getFirstChannel model.channelList
+            --         |> getFirstChannelMessages
+            -- else if (List.length  expectedSelectedChannelMessages == 0) then
+            --     []
+            -- else
+            --     expectedSelectedChannelMessages
     in
         column [ height fill, width <| fillPortion 4]
         [
@@ -234,7 +267,10 @@ chatPanel model =
                 }
             ]
             ,column [scrollbarY] 
-                <| List.map messageEntry model.chatMessages
+                <| List.map messageEntry selectedChannelNameMessages
+                        -- (case model.selectedChannel of
+                        --     Just val -> val.chatMessages
+                        --     Nothing -> getFirstChannelMessages (List.head model.channelList) )
             ,column [ alignBottom, padding 20, width fill ]
             [
                 row
