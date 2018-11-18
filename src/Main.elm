@@ -10,23 +10,26 @@ import Element.Input as Input
 import Html exposing (Html)
 import Task
 
+getSelectedChannel requiredChannelIndex channelList =
+    List.filter(\c -> c.index == requiredChannelIndex) channelList
+                        |> List.head
+                        
 getSelectedChannelName  selectedChannel = 
     case selectedChannel of
         Just slctdChnl -> slctdChnl.name
-        Nothing -> ""
+        Nothing -> "INVALID CHANNEL..."
 
 indexValue : ChannelSelectedIndex -> Int
 indexValue (ChannelSelectedIndex index) =
         index
 
-defaultIndexValue : DefaultSelectedIndex -> Int
-defaultIndexValue (DefaultSelectedIndex index) =
-        index
+-- defaultIndexValue : DefaultSelectedIndex -> Int
+-- defaultIndexValue (DefaultSelectedIndex index) =
+--         index
 
-convertToChannelSelectedIndex : DefaultSelectedIndex -> ChannelSelectedIndex
-convertToChannelSelectedIndex (DefaultSelectedIndex index) =
-    ChannelSelectedIndex index
-
+-- convertToChannelSelectedIndex : DefaultSelectedIndex -> ChannelSelectedIndex
+-- convertToChannelSelectedIndex (DefaultSelectedIndex index) =
+--     ChannelSelectedIndex index
 
 type alias Model
     = {
@@ -47,12 +50,13 @@ type alias ChatMessage =
 type ChannelSelectedIndex = 
     ChannelSelectedIndex Int
 
-type DefaultSelectedIndex = 
-    DefaultSelectedIndex Int
+-- type DefaultSelectedIndex = 
+--     DefaultSelectedIndex Int
 
 type Msg
     = ChannelSelected ChannelSelectedIndex
-    | Start DefaultSelectedIndex
+    | Start ChannelSelectedIndex
+    --| Start DefaultSelectedIndex
 
 init : () -> (Model, Cmd Msg)
 init _=
@@ -104,26 +108,23 @@ init _=
                                 ,ChatMessage "Indira Yadali" "10:30 PM" "At first glance, this might look like a lot of code, however note that it's really straightforward, and most of it is simply layout and styling attributes. At the bottom of the function, it's very clearly stated that we have vertically arranged header, messages and footer."
                                 ,ChatMessage "Indira Yadali" "10:30 PM" "At first glance, this might look like a lot of code, however note that it's really straightforward, and most of it is simply layout and styling attributes. At the bottom of the function, it's very clearly stated that we have vertically arranged header, messages and footer.Indira Yadali glance, this might look like a lot of code, however note that it's really straightforward, and most of it is simply layout and styling attributes. At the bottom of the function, it's very clearly stated that we have vertically arranged header, messages and footer"    
                             ]
-        }, sendMessage (Start (DefaultSelectedIndex 2)))
+        }, sendMessage (Start (ChannelSelectedIndex 2)))
 
 update: Msg -> Model -> (Model, Cmd Msg)
 update msg model =
     case msg of
         Start index ->
             let
-                defaultChannel = List.filter(\c -> c.index == convertToChannelSelectedIndex index) model.channelList
-                                        |> List.head
+                defaultChannel = getSelectedChannel index model.channelList
             in
                 ({model | selectedChannel = defaultChannel}, Cmd.none)
 
         ChannelSelected index ->
             let
-                x = List.filter(\c -> c.index == index) model.channelList
-                        |> List.head
+                slctdCnnl = getSelectedChannel index model.channelList
             in
-                ( {model | selectedChannel = x} , Cmd.none)
+                ( {model | selectedChannel = slctdCnnl} , Cmd.none)
             
-
 main: Program () Model Msg
 main = 
      Browser.element { init = init, update = update, view = view, subscriptions = always Sub.none }
@@ -157,7 +158,7 @@ channelPanel {channelList, selectedChannel} =
                 newchannelAttrs = channelAttrs ++ [onClick (ChannelSelected index)] 
                 idx = case selectedChannel of
                         Just val -> val.index
-                        Nothing -> convertToChannelSelectedIndex (DefaultSelectedIndex 1)
+                        Nothing -> (ChannelSelectedIndex 1)
             in
                 el -- div
                     (
