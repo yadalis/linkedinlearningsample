@@ -218,7 +218,7 @@ estimatePanel model =
             ,row[width fill, paddingEach  {edges | top = 15, bottom = 15}
                 ,Font.alignLeft, spaceEvenly
                 , Border.color <| rgb255 237 45 45
-                ,Background.color <| rgb255 247 247 247 ]
+                ,Background.color <| rgb255 225 225 225 ]
             [
                 column[ width <| fill, alignTop ,Border.width 0 , paddingEach  {edges | left = 50}]
                     [
@@ -257,7 +257,7 @@ estimatePanel model =
             ,row[width fill, paddingXY 50 15
                 ,Font.alignLeft, spaceEvenly
                 , Border.color <| rgb255 237 45 45
-                ,Background.color <| rgb255 247 247 247 ]
+                ,Background.color <| rgb255 225 225 225 ]
             [
                 column[spacingXY 0 10,width <| fill]
                     [
@@ -288,7 +288,7 @@ estimatePanel model =
             ,row[width fill, paddingXY 50 15
                 ,Font.alignLeft, spaceEvenly
                 , Border.color <| rgb255 237 45 45
-                ,Background.color <| rgb255 247 247 247 ]
+                ,Background.color <| rgb255 225 225 225 ]
             [
                 column[spacingXY 0 10,width <| fill]
                     [
@@ -345,7 +345,7 @@ estimatePanel model =
             ,row[width fill, paddingXY 50 15
                 ,Font.alignLeft, spaceEvenly
                 , Border.color <| rgb255 237 45 45
-                ,Background.color <| rgb255 247 247 247 ]
+                ,Background.color <| rgb255 225 225 225 ]
             [
                 column[spacingXY 0 10,width <| fill]
                     [
@@ -392,7 +392,7 @@ estimatePanel model =
             ,row[width fill, paddingXY 5 15
                 ,Font.alignLeft, spaceEvenly
                 , Border.color <| rgb255 237 45 45
-                ,Background.color <| rgb255 247 247 247 ]
+                ,Background.color <| rgb255 225 225 225 ]
             [
                 column[spacingXY 0 10,width <| fill]
                     [
@@ -412,7 +412,7 @@ estimatePanel model =
             ,row[width fill, paddingXY 5 0
                 ,Font.alignLeft, spaceEvenly
                 , Border.color <| rgb255 237 45 45
-                ,Background.color <| rgb255 247 247 247 ]
+                ,Background.color <| rgb255 225 225 225 ]
             [
                 column[spacingXY 0 10,width <| fill]
                     [
@@ -432,7 +432,7 @@ estimatePanel model =
             ,row[width fill, paddingEach {edges | right = 75, top = 25, left = 5}
                 ,Font.alignLeft, spaceEvenly
                 , Border.color <| rgb255 237 45 45
-                ,Background.color <| rgb255 247 247 247 ]
+                ,Background.color <| rgb255 225 225 225 ]
             [
                  column[spacingXY 0 10, width <| fill ]
                     [
@@ -453,7 +453,7 @@ estimatePanel model =
             ,row[width fill, paddingEach {edges | right = 75, top = 15, left = 5}
                 ,Font.alignLeft, spaceEvenly
                 , Border.color <| rgb255 237 45 45
-                ,Background.color <| rgb255 247 247 247 ]
+                ,Background.color <| rgb255 225 225 225 ]
             [
                 column[spacingXY 0 10, width <| fill ]
                     [
@@ -473,7 +473,7 @@ estimatePanel model =
             ,row[width fill, paddingEach {edges | right = 75, top = 8, left = 5}
                 ,Font.alignLeft, spaceEvenly
                 , Border.color <| rgb255 237 45 45
-                ,Background.color <| rgb255 247 247 247 ]
+                ,Background.color <| rgb255 225 225 225 ]
             [
                 column[spacingXY 0 10, width <| fill ]
                     [
@@ -493,7 +493,7 @@ estimatePanel model =
             ,row[width fill, paddingEach {edges | right = 75, top = 8, left = 5}
                 ,Font.alignLeft, spaceEvenly
                 , Border.color <| rgb255 237 45 45
-                ,Background.color <| rgb255 247 247 247 ]
+                ,Background.color <| rgb255 225 225 225 ]
             [
                 column[spacingXY 0 10, width <| fill ]
                     [
@@ -513,7 +513,7 @@ estimatePanel model =
             ,row[width fill, paddingEach {edges | right = 75, top = 8, left = 5}
                 ,Font.alignLeft, spaceEvenly
                 , Border.color <| rgb255 237 45 45
-                ,Background.color <| rgb255 247 247 247 ]
+                ,Background.color <| rgb255 225 225 225 ]
             [
                 column[spacingXY 0 10, width <| fill ]
                     [
@@ -533,7 +533,7 @@ estimatePanel model =
             ,row[width fill, paddingEach {edges | right = 75, top = 8, left = 5, bottom = 10}
                 ,Font.alignLeft, spaceEvenly
                 , Border.color <| rgb255 237 45 45
-                ,Background.color <| rgb255 247 247 247 ]
+                ,Background.color <| rgb255 225 225 225 ]
             [
                 column[spacingXY 0 10, width <| fill ]
                     [
@@ -558,7 +558,7 @@ estimatePanel model =
             ,row[width fill, paddingXY 5 15
                 ,Font.alignLeft, spaceEvenly
                 , Border.color <| rgb255 237 45 45
-                ,Background.color <| rgb255 247 247 247 ]
+                ,Background.color <| rgb255 225 225 225 ]
             [
                 column[spacingXY 0 10,width <| fill]
                     [
@@ -578,7 +578,7 @@ estimatePanel model =
             ,row[width fill, paddingXY 5 0
                 ,Font.alignLeft, spaceEvenly
                 , Border.color <| rgb255 237 45 45
-                ,Background.color <| rgb255 247 247 247 ]
+                ,Background.color <| rgb255 225 225 225 ]
             [
                 column[spacingXY 0 10,width <| fill]
                     [
@@ -598,7 +598,7 @@ estimatePanel model =
             ,row[width fill, paddingEach {edges | right = 75, top = 25, left = 5}
                 ,Font.alignLeft, spaceEvenly
                 , Border.color <| rgb255 237 45 45
-                ,Background.color <| rgb255 247 247 247 ]
+                ,Background.color <| rgb255 225 225 225 ]
             [
                  column[spacingXY 0 10, width <| fill ]
                     [
@@ -619,7 +619,7 @@ estimatePanel model =
             ,row[width fill, paddingEach {edges | right = 75, top = 15, left = 5}
                 ,Font.alignLeft, spaceEvenly
                 , Border.color <| rgb255 237 45 45
-                ,Background.color <| rgb255 247 247 247 ]
+                ,Background.color <| rgb255 225 225 225 ]
             [
                 column[spacingXY 0 10, width <| fill ]
                     [
@@ -639,7 +639,7 @@ estimatePanel model =
             ,row[width fill, paddingEach {edges | right = 75, top = 8, left = 5}
                 ,Font.alignLeft, spaceEvenly
                 , Border.color <| rgb255 237 45 45
-                ,Background.color <| rgb255 247 247 247 ]
+                ,Background.color <| rgb255 225 225 225 ]
             [
                 column[spacingXY 0 10, width <| fill ]
                     [
@@ -659,7 +659,7 @@ estimatePanel model =
             ,row[width fill, paddingEach {edges | right = 75, top = 8, left = 5}
                 ,Font.alignLeft, spaceEvenly
                 , Border.color <| rgb255 237 45 45
-                ,Background.color <| rgb255 247 247 247 ]
+                ,Background.color <| rgb255 225 225 225 ]
             [
                 column[spacingXY 0 10, width <| fill ]
                     [
@@ -679,7 +679,7 @@ estimatePanel model =
             ,row[width fill, paddingEach {edges | right = 75, top = 8, left = 5}
                 ,Font.alignLeft, spaceEvenly
                 , Border.color <| rgb255 237 45 45
-                ,Background.color <| rgb255 247 247 247 ]
+                ,Background.color <| rgb255 225 225 225 ]
             [
                 column[spacingXY 0 10, width <| fill ]
                     [
@@ -700,7 +700,7 @@ estimatePanel model =
                 ,Font.alignLeft, spaceEvenly
                 , Border.color <| rgb255 237 45 45
                 
-                ,Background.color <| rgb255 247 247 247 ]
+                ,Background.color <| rgb255 225 225 225 ]
             [
                 column[spacingXY 0 10, width <| fill ]
                     [
@@ -717,35 +717,37 @@ estimatePanel model =
                             ]
                     ]
             ]
-             ,row[width fill, paddingEach {edges | left = 5, top = 5}
+             ,row[width fill 
                 ,Font.alignLeft, spaceEvenly
                 ,Border.widthEach {edges | top = 2}
-                ,Background.color <| rgb255 247 247 247
+                --,Border.width 2
+                -- ,Background.color <| rgb255 235 235 235
                 , height <| px 250
                  ]
             [
-                column[spacingXY 0 10,width <| fillPortion 5, Border.widthEach {edges | right = 2}, height fill, paddingEach {edges | top = 5, right = 15}]
+                column[width <| fillPortion 5, Border.widthEach {edges | right = 2}, height fill, padding 15]
                 [             
                     dataValuePragraph
                         [ 
                                 text "Every vehicle you can see on the road has its own, unique Vehicle Identification Number (VIN). It is also sometimes referred to as the body number. VIN is unique to every vehicle, which literally means that no two cars share the same VIN. This is why the number is often compared to a car's DNA or a fingerprint, as it makes it possible to identify a vehicle just as easily and precisely. Most of contemporary vehicles have the VIN number in the lower part of the windscreen, on the driver side. The 17 digits should be easily accessible so you won’t need the seller to assist you in finding the VIN."
                         ]
                 ]
-                ,column[spacingXY 0 10, width <| fillPortion 3,height fill, paddingEach {edges | top = 5, right = 15}]
+                ,column[spacingXY 0 10, width <| fillPortion 2,height fill, paddingEach {edges | top = 15 }]
                 [
-                    row[width fill, paddingEach {edges | right = 60, top = 5, left = 5}
+                    row[width fill , paddingXY 0 5
                     ,Font.alignLeft, spaceEvenly
-                    , Border.color <| rgb255 237 45 45
-                    ,Background.color <| rgb255 247 247 247 ]
+                    --, Border.color <| rgb255 237 45 45
+                    ,Border.widthEach {edges | top = 1}
+                    ,Background.color <| rgb255 225 225 225]
                     [
-                        column[spacingXY 0 10, width <| fill ]
+                        column[ width <| fill ]
                             [
                                 paragraph[Font.size 18, Font.alignLeft]
                                     [ 
                                         text "Labor Total"
                                     ]
                             ]
-                        ,column[spacingXY 0 10, width <| fill ]
+                        ,column[ width <| fill ]
                             [
                                 paragraph[Font.size 18, Font.alignRight]
                                     [ 
@@ -753,19 +755,20 @@ estimatePanel model =
                                     ]
                             ]
                     ]
-                    ,row[width fill, paddingEach {edges | right = 60, top = 8, left = 5}
+                    ,row[width fill , paddingXY 0 5
                         ,Font.alignLeft, spaceEvenly
-                        , Border.color <| rgb255 237 45 45
-                        ,Background.color <| rgb255 247 247 247 ]
+                        --, Border.color <| rgb255 237 45 45
+                        ,Border.widthEach {edges | top = 1}
+                        ,Background.color <| rgb255 225 225 225 ]
                     [
-                        column[spacingXY 0 10, width <| fill ]
+                        column[width <| fill ]
                             [
                                 paragraph[Font.size 18, Font.alignLeft]
                                     [ 
                                         text "Parts Total"
                                     ]
                             ]
-                        ,column[spacingXY 0 10, width <| fill ]
+                        ,column[ width <| fill ]
                             [
                                 paragraph[Font.size 18, Font.alignRight]
                                     [ 
@@ -773,19 +776,20 @@ estimatePanel model =
                                     ]
                             ]
                     ]
-                    ,row[width fill, paddingEach {edges | right = 60, top = 8, left = 5}
+                    ,row[width fill , paddingXY 0 5
                         ,Font.alignLeft, spaceEvenly
-                        , Border.color <| rgb255 237 45 45
-                        ,Background.color <| rgb255 247 247 247 ]
+                        --, Border.color <| rgb255 237 45 45
+                        ,Border.widthEach {edges | top = 1}
+                        ,Background.color <| rgb255 225 225 225 ]
                     [
-                        column[spacingXY 0 10, width <| fill ]
+                        column[ width <| fill ]
                             [
                                 paragraph[Font.size 18, Font.alignLeft]
                                     [ 
                                         text "Frieght Total"
                                     ]
                             ]
-                        ,column[spacingXY 0 10, width <| fill ]
+                        ,column[ width <| fill ]
                             [
                                 paragraph[Font.size 18, Font.alignRight]
                                     [ 
@@ -793,19 +797,20 @@ estimatePanel model =
                                     ]
                             ]
                     ]
-                    ,row[width fill, paddingEach {edges | right = 60, top = 8, left = 5}
+                    ,row[width fill , paddingXY 0 5
                     ,Font.alignLeft, spaceEvenly
-                    , Border.color <| rgb255 237 45 45
-                    ,Background.color <| rgb255 247 247 247 ]
+                    --, Border.color <| rgb255 237 45 45
+                    ,Border.widthEach {edges | top = 1}
+                    ,Background.color <| rgb255 225 225 225 ]
                     [
-                        column[spacingXY 0 10, width <| fill ]
+                        column[  width <| fill ]
                             [
                                 paragraph[Font.size 18, Font.alignLeft]
                                     [ 
                                         text "Sublet Total"
                                     ]
                             ]
-                        ,column[spacingXY 0 10, width <| fill ]
+                        ,column[ width <| fill ]
                             [
                                 paragraph[Font.size 18, Font.alignRight]
                                     [ 
@@ -813,20 +818,20 @@ estimatePanel model =
                                     ]
                             ]
                     ]
-                    ,row[width fill, paddingEach {edges | right = 60, top = 8, left = 5, bottom = 10}
+                    ,row[width fill , paddingXY 0 5
                         ,Font.alignLeft, spaceEvenly
-                        , Border.color <| rgb255 237 45 45
-                        
-                        ,Background.color <| rgb255 247 247 247 ]
+                        --, Border.color <| rgb255 225 225 225 
+                        ,Border.widthEach {edges | top = 1}
+                        ,Background.color <| rgb255 225 225 225 ]
                     [
-                        column[spacingXY 0 10, width <| fill ]
+                        column[ width <| fill ]
                             [
-                                paragraph[Font.size 18, Font.alignLeft]
+                                paragraph[Font.size 18,  Font.alignLeft]
                                     [ 
                                         text "Shop Supplies Total"
                                     ]
                             ]
-                        ,column[spacingXY 0 10, width <| fill ]
+                        ,column[  width <| fill ]
                             [
                                 paragraph[Font.size 18, Font.alignRight]
                                     [ 
@@ -838,16 +843,16 @@ estimatePanel model =
                         ,alignBottom
                         ,height <| px 25
                         ,Border.width 1
-                        ,Background.color <| rgb255 209 209 209 ]
+                          ]
                     [
-                        column[spacingXY 0 10, width <| fillPortion 5]
+                        column[ width <| fillPortion 5]
                             [
                                 paragraph[Font.size 18, Font.alignRight]
                                     [ 
                                         text "Estimate Total "
                                     ]
                             ]
-                        ,column[spacingXY 0 10, width <| fillPortion 2 ]
+                        ,column[  width <| fillPortion 2 ]
                             [
                                 paragraph[Font.size 18, Font.alignRight]
                                     [ 
