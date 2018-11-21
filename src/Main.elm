@@ -40,6 +40,7 @@ type alias RepairOrder =
         , engineSerial : String
         , jobSteps : List JobStep
         , showVMRSCodes : Bool
+        , showParts : Bool
         , selectedChoise : String
     }
 
@@ -90,7 +91,8 @@ init _=
                             , VMRS "219-031-011-015-132" "Brakes and Cluth combo " 16.5]
                              [Part 1 "P1asdfasdfasdfasdf34343434343asdgsadgsdgf asdfasdfasdf asdfasdfasdfasdfasfasdf asdfasfasfasdfasdf asdfas" "OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES OIL COOLER HOUSING GASKET AND AIR", Part 2 "Brakes and Cluth combo" "OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES" , Part 5 "P3asd" "Part 3"]
                 ]
-            , showVMRSCodes = True
+            , showVMRSCodes = False
+            , showParts = False
             , selectedChoise = "Tryo"
          },Cmd.none)
 
@@ -98,9 +100,12 @@ init _=
 update: Msg -> RepairOrder -> (RepairOrder, Cmd Msg)
 update msg model =
     case msg of
-        ShowVMRSCodes canShow ->
-            ( {model | showVMRSCodes = canShow}, Cmd.none)
-
+        ShowVMRSCodes canShowVMRSCode ->
+            ( {model | showVMRSCodes = canShowVMRSCode}, Cmd.none)
+        
+        ShowParts canShowParts ->
+            ( {model | showParts = canShowParts}, Cmd.none)
+        
         RB str ->
             ( {model | selectedChoise = str}, Cmd.none)
 
@@ -114,13 +119,11 @@ main =
 view : RepairOrder -> Html Msg
 view  model =
     layout [height fill] <|
-        column[height fill] [
             row [ height fill, width fill, Border.glow (rgb255 244 65 65) 0]
                 [ 
                     optionsPanel model
                     , estimatePanel model
                 ]
-        ]
         
 optionsPanel : RepairOrder -> Element Msg
 optionsPanel model =
@@ -160,9 +163,16 @@ optionsPanel model =
             Input.checkbox [] {
                 onChange = ShowVMRSCodes
                 ,icon = (\b ->
-                                if b == True then image [centerY, height <| px 45] {src = "check.png", description ="Logo" } else image [centerY, height <| px 45] {src = "uncheck.png", description ="Logo" })
-                , label = Input.labelLeft [] (el [] <| text "Select a question : ")
+                                if b == True then image [centerY, height <| px 45] {src = "uncheck.png", description ="Logo" } else image [centerY, height <| px 45] {src = "check.png", description ="Logo" })
+                , label = Input.labelLeft [] (el [] <| text (if model.showVMRSCodes then "Hide VMRS Codes : " else "Show VMRS Codes : "))
                 , checked = model.showVMRSCodes
+            }
+            ,Input.checkbox [] {
+                onChange = ShowParts
+                ,icon = (\b ->
+                                if b == True then image [centerY, height <| px 45] {src = "uncheck.png", description ="Logo" } else image [centerY, height <| px 45] {src = "check.png", description ="Logo" })
+                , label = Input.labelLeft [] (el [] <| text (if model.showParts then "Hide Parts : " else "Show Parts : "))
+                , checked = model.showParts
             }
             ,Input.radio
                 [ padding 10
@@ -181,17 +191,21 @@ optionsPanel model =
 
 estimatePanel : RepairOrder -> Element Msg
 estimatePanel model =
-        column [ height fill, width <| fillPortion 4,  paddingXY 10 10, Border.widthEach {edges | left = 1}, scrollbarY]
+        column [height fill,  width <| fillPortion 4,  paddingXY 10 10, Border.widthEach {edges | left = 1}]
         [
-            roEstimateHeaderView model.repairOrderNumber
-            ,roInfoView model.repairOrderNumber model.branchNumber model.branchDepartmentNumber model.branchPhoneNumber
-            ,customerInfoView model.customerName model.customerAddressLine1 model.customerAddressLine2 model.customerPhoneNumber
-            ,unitInfoView model
-            ,column[width fill]
-                            (List.map2 jobStepInfoView model.jobSteps (List.repeat (List.length model.jobSteps) model.showVMRSCodes ) )
+            row[width fill]
+                [roEstimateHeaderView model.repairOrderNumber]
+            ,column[scrollbarY]
+            [
+                roInfoView model.repairOrderNumber model.branchNumber model.branchDepartmentNumber model.branchPhoneNumber
+                ,customerInfoView model.customerName model.customerAddressLine1 model.customerAddressLine2 model.customerPhoneNumber
+                ,unitInfoView model
+                ,column[width fill]
+                                (List.map3 jobStepInfoView model.jobSteps (List.repeat (List.length model.jobSteps) model.showVMRSCodes ) (List.repeat (List.length model.jobSteps) model.showParts ) )
 
-            ,estimateNotesAndGrandTotalsView model
-         ]
+                ,estimateNotesAndGrandTotalsView model
+            ]
+        ]
 
                     
 -- this is just to send a message back in to update function when there are no side-effects needed and just a way to put the message back in to update function

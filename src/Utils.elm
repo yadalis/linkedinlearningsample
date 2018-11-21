@@ -14,6 +14,7 @@ type Msg
     = VMRSContentIsRequired
     | RB String
     | ShowVMRSCodes Bool
+    | ShowParts Bool
     
 type alias JobStep =
     { 

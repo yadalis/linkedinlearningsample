@@ -299,8 +299,8 @@ unitInfoView model =
                     --     }   
             --]
 
-jobStepInfoView : JobStep -> Bool -> Element Msg
-jobStepInfoView jobStep canShowVMRSCodes =
+jobStepInfoView : JobStep -> Bool -> Bool -> Element Msg
+jobStepInfoView jobStep canShowVMRSCodes canShowParts =
         column[width fill]
         [
             row[width fill,paddingEach  {edges | top = 25}, Font.semiBold, Border.widthEach {edges | bottom = 1}]
@@ -353,7 +353,7 @@ jobStepInfoView jobStep canShowVMRSCodes =
                 else
                     row[][]
             , 
-                if List.length jobStep.parts > 0 then
+                if List.length jobStep.parts > 0 && canShowParts then
                     partsInfoView jobStep.parts
                 else
                     row[][]
