@@ -22,7 +22,6 @@ import View.ROEstimateHeaderView exposing (..)
 type alias RepairOrder =
     { 
           repairOrderNumber : Int
-        -- , aggregateRootId: String
         , branchNumber : Int
         , branchDepartmentNumber : Int
         , branchPhoneNumber : String
@@ -39,22 +38,10 @@ type alias RepairOrder =
         , engineMake : String
         , engineModel : String
         , engineSerial : String
-        -- , internalStatus: String
         , jobSteps : List JobStep
-        -- , driverWaiting: Bool
-        -- , isPortalUser: Int
-        -- , timeZoneDisplay: String
-        -- , estimatedWorkFinish: Maybe String
+        , showVMRSCodes : Bool
+        , selectedChoise : String
     }
-
-dataValueFont =
-    Font.size 15
-
-dataValuePragraph = 
-    paragraph [Font.size 16]
-
-dataHeaderPragraph = 
-    paragraph [Font.size 18]
 
 type alias JobStep =
     { 
@@ -65,31 +52,60 @@ type alias JobStep =
           ,parts : List Part
     }
 
-
-
-
 init : () -> (RepairOrder, Cmd Msg)
 init _=
-     ( RepairOrder 30189 20 370 "816-123-1234" "FedEx" "4860 College Blvd" "Overland Park KS 66221" "785-532-8264"
-                    "UN-12334" "1HGCM82633A004352" 2018 "Peterbilt" "PB 2809" 123123 "Paccar" "PC-X3443 56345cw3 45w34534 " "45ASDF"
-                    [
-                        JobStep 1 "OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES" " OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES LEAKING."
-                        [VMRS "119-03-01-05-132" "Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo" 12.5
-                        , VMRS "119-031-011-015-132" "Brakes and Cluth combo " 14.0
-                        , VMRS "219-031-011-015-132" "Brakes and Cluth combo " 16.5]
-                        [Part 1 "P1asdfasdfasdfasdf34343434343asdgsadgsdgf asdfasdfasdf asdfasdfasdfasdfasfasdf asdfasfasfasdfasdf asdfas" "OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES OIL COOLER HOUSING GASKET AND AIR", Part 2 "Brakes and Cluth combo" "OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES" , Part 5 "P3asd" "Part 3"]
-                        ,JobStep 2 "POWER STEERING PUMP AND STEERING GEAR BOX LEAKING." "POWER STEERING PUMP AND STEERING GEAR BOX LEAKING."
-                        [][]
-                        ,JobStep 3 "PICK UP AND DELIVER" "PICK UP AND DELIVER"
-                        [][]
-                    ] ,Cmd.none)
+     ( 
+         {
+             repairOrderNumber = 30189
+            , branchNumber = 20
+            , branchDepartmentNumber = 370
+            , branchPhoneNumber = "234-234-6345"
+            , customerName =" FedEx"
+            , customerAddressLine1 = "asdfasdfasdf"
+            , customerAddressLine2 = "asdfasdfasdf"
+            , customerPhoneNumber = "asdfasfasdfasdf"
+            , unitNumber = "asdfasfasdfasdf"
+            , unitVehicleIdNumber = "asdfasfasdfasdf"
+            , year = 2018
+            , make = "asdfasfasdfasdf"
+            , model = "asdfasfasdfasdf"
+            , mileage = 23452345
+            , engineMake = "asdfasfasdfasdf"
+            , engineModel = "asdfasfasdfasdf"
+            , engineSerial = "asdfasfasdfasdf"
+            , jobSteps = [
+                    JobStep 1 "OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES" " OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES LEAKING."
+                            [VMRS "119-03-01-05-132" "Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo" 12.5
+                            , VMRS "119-031-011-015-132" "Brakes and Cluth combo " 14.0
+                            , VMRS "219-031-011-015-132" "Brakes and Cluth combo " 16.5]
+                            [Part 1 "P1asdfasdfasdfasdf34343434343asdgsadgsdgf asdfasdfasdf asdfasdfasdfasdfasfasdf asdfasfasfasdfasdf asdfas" "OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES OIL COOLER HOUSING GASKET AND AIR", Part 2 "Brakes and Cluth combo" "OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES" , Part 5 "P3asd" "Part 3"]
+                    ,JobStep 2 "POWER STEERING PUMP AND STEERING GEAR BOX LEAKING." "POWER STEERING PUMP AND STEERING GEAR BOX LEAKING."
+                             [VMRS "119-03-01-05-132" "Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo" 12.5
+                            , VMRS "119-031-011-015-132" "Brakes and Cluth combo " 14.0
+                            , VMRS "219-031-011-015-132" "Brakes and Cluth combo " 16.5]
+                             [Part 1 "P1asdfasdfasdfasdf34343434343asdgsadgsdgf asdfasdfasdf asdfasdfasdfasdfasfasdf asdfasfasfasdfasdf asdfas" "OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES OIL COOLER HOUSING GASKET AND AIR", Part 2 "Brakes and Cluth combo" "OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES" , Part 5 "P3asd" "Part 3"]
+                    ,JobStep 3 "PICK UP AND DELIVER" "PICK UP AND DELIVER"
+                             [VMRS "119-03-01-05-132" "Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo" 12.5
+                            , VMRS "119-031-011-015-132" "Brakes and Cluth combo " 14.0
+                            , VMRS "219-031-011-015-132" "Brakes and Cluth combo " 16.5]
+                             [Part 1 "P1asdfasdfasdfasdf34343434343asdgsadgsdgf asdfasdfasdf asdfasdfasdfasdfasfasdf asdfasfasfasdfasdf asdfas" "OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES OIL COOLER HOUSING GASKET AND AIR", Part 2 "Brakes and Cluth combo" "OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES" , Part 5 "P3asd" "Part 3"]
+                ]
+            , showVMRSCodes = True
+            , selectedChoise = "Tryo"
+         },Cmd.none)
+
 
 update: Msg -> RepairOrder -> (RepairOrder, Cmd Msg)
 update msg model =
     case msg of
-        VMRSContentIsRequired   ->
-           ( RepairOrder 30189 20 370 "816-123-1234" "FedEx" "4860 College Blvd" "Overland Park KS 66221" "785-532-8264"
-                    "UN-12334" "1NXSDRFGSCD45ASDF" 2018 "Peterbilt" "PB 2809" 123123 "Paccar" "PC-X344356" "45ASDF" [],Cmd.none)
+        ShowVMRSCodes canShow ->
+            ( {model | showVMRSCodes = canShow}, Cmd.none)
+
+        RB str ->
+            ( {model | selectedChoise = str}, Cmd.none)
+
+        VMRSContentIsRequired  ->
+           ( model, Cmd.none)
             
 main: Program () RepairOrder Msg
 main = 
@@ -98,7 +114,7 @@ main =
 view : RepairOrder -> Html Msg
 view  model =
     layout [height fill] <|
-        column[] [
+        column[height fill] [
             row [ height fill, width fill, Border.glow (rgb255 244 65 65) 0]
                 [ 
                     optionsPanel model
@@ -107,7 +123,7 @@ view  model =
         ]
         
 optionsPanel : RepairOrder -> Element Msg
-optionsPanel _ =
+optionsPanel model =
     let
         activeChannelAttrs =
             [ Background.color <| rgb255 117 179 201, Font.bold ]
@@ -133,16 +149,36 @@ optionsPanel _ =
                     <| text ("#   " )
     in
     column
-        [ height fill
-        , width <| fillPortion 1
-        , paddingXY 0 30
-        , Background.color <| rgb255 219 219 219
-        , Font.color <| rgb255 25 25 25
+        [  height fill,
+         width <| fill
+        , paddingXY 10 10
+        , Background.color <| rgb255 225 225 225
+        --, Font.color <| rgb255 25 25 25
+        , alignTop
         ]
         [
-            text " "
+            Input.checkbox [] {
+                onChange = ShowVMRSCodes
+                ,icon = (\b ->
+                                if b == True then image [centerY, height <| px 45] {src = "check.png", description ="Logo" } else image [centerY, height <| px 45] {src = "uncheck.png", description ="Logo" })
+                , label = Input.labelLeft [] (el [] <| text "Select a question : ")
+                , checked = model.showVMRSCodes
+            }
+            ,Input.radio
+                [ padding 10
+                , spacing 20
+                ]
+                    { onChange = RB
+                    , selected = Just model.selectedChoise
+                    , label = Input.labelAbove [] (el [] <| text "Lunch ")
+                    , options =
+                        [  
+                        Input.option "Taco" (text "Taco!")
+                        , Input.option "Gyro" (text "Gyro")
+                        ]
+                    }           
         ]
- 
+
 estimatePanel : RepairOrder -> Element Msg
 estimatePanel model =
         column [ height fill, width <| fillPortion 4,  paddingXY 10 10, Border.widthEach {edges | left = 1}, scrollbarY]
@@ -152,7 +188,8 @@ estimatePanel model =
             ,customerInfoView model.customerName model.customerAddressLine1 model.customerAddressLine2 model.customerPhoneNumber
             ,unitInfoView model
             ,column[width fill]
-                        (List.map jobStepInfoView model.jobSteps)
+                            (List.map2 jobStepInfoView model.jobSteps (List.repeat (List.length model.jobSteps) model.showVMRSCodes ) )
+
             ,estimateNotesAndGrandTotalsView model
          ]
 

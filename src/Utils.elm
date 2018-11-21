@@ -12,6 +12,8 @@ import Data.Question exposing (..)
 
 type Msg
     = VMRSContentIsRequired
+    | RB String
+    | ShowVMRSCodes Bool
     
 type alias JobStep =
     { 

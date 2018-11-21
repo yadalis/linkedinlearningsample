@@ -299,8 +299,8 @@ unitInfoView model =
                     --     }   
             --]
 
-jobStepInfoView : JobStep -> Element Msg
-jobStepInfoView jobStep =
+jobStepInfoView : JobStep -> Bool -> Element Msg
+jobStepInfoView jobStep canShowVMRSCodes =
         column[width fill]
         [
             row[width fill,paddingEach  {edges | top = 25}, Font.semiBold, Border.widthEach {edges | bottom = 1}]
@@ -348,7 +348,7 @@ jobStepInfoView jobStep =
                     ]
             ]
             ,
-                if List.length jobStep.vmrsCodes > 0 then
+                if List.length jobStep.vmrsCodes > 0 && canShowVMRSCodes then
                     vmrsInfoView jobStep.vmrsCodes
                 else
                     row[][]
@@ -358,127 +358,127 @@ jobStepInfoView jobStep =
                 else
                     row[][]
 
-            ,row[width fill, paddingEach {edges | right = 75, top = 25, left = 5}
-                ,Font.alignLeft, spaceEvenly
-                , Border.color <| rgb255 237 45 45
-                ,Background.color <| rgb255 225 225 225 ]
-            [
-                 column[spacingXY 0 10, width <| fill ]
-                    [
-                        paragraph[Font.size 14, Font.alignLeft, Font.semiBold]
-                            [ 
-                                 text "CHARGE TYPE"
-                            ]
-                    ]
-                ,
-                column[spacingXY 0 10, width <| fill ]
-                    [
-                        paragraph[Font.size 14, Font.alignRight, Font.semiBold]
-                            [ 
-                                 text "AMOUNT"
-                            ]
-                    ]
-            ]
-            ,row[width fill, paddingEach {edges | right = 75, top = 15, left = 5}
-                ,Font.alignLeft, spaceEvenly
-                , Border.color <| rgb255 237 45 45
-                ,Background.color <| rgb255 225 225 225 ]
-            [
-                column[spacingXY 0 10, width <| fill ]
-                    [
-                        paragraph[Font.size 14, Font.alignLeft]
-                            [ 
-                                 text "LABOR"
-                            ]
-                    ]
-                ,column[spacingXY 0 10, width <| fill ]
-                    [
-                        paragraph[Font.size 14, Font.alignRight]
-                            [ 
-                                 text "$173.00"
-                            ]
-                    ]
-            ]
-            ,row[width fill, paddingEach {edges | right = 75, top = 8, left = 5}
-                ,Font.alignLeft, spaceEvenly
-                , Border.color <| rgb255 237 45 45
-                ,Background.color <| rgb255 225 225 225 ]
-            [
-                column[spacingXY 0 10, width <| fill ]
-                    [
-                        paragraph[Font.size 14, Font.alignLeft]
-                            [ 
-                                 text "PARTS"
-                            ]
-                    ]
-                ,column[spacingXY 0 10, width <| fill ]
-                    [
-                        paragraph[Font.size 14, Font.alignRight]
-                            [ 
-                                 text "$13.00"
-                            ]
-                    ]
-            ]
-            ,row[width fill, paddingEach {edges | right = 75, top = 8, left = 5}
-                ,Font.alignLeft, spaceEvenly
-                , Border.color <| rgb255 237 45 45
-                ,Background.color <| rgb255 225 225 225 ]
-            [
-                column[spacingXY 0 10, width <| fill ]
-                    [
-                        paragraph[Font.size 14, Font.alignLeft]
-                            [ 
-                                 text "FRIEGHT"
-                            ]
-                    ]
-                ,column[spacingXY 0 10, width <| fill ]
-                    [
-                        paragraph[Font.size 14, Font.alignRight]
-                            [ 
-                                 text "$243.00"
-                            ]
-                    ]
-            ]
-            ,row[width fill, paddingEach {edges | right = 75, top = 8, left = 5}
-                ,Font.alignLeft, spaceEvenly
-                , Border.color <| rgb255 237 45 45
-                ,Background.color <| rgb255 225 225 225 ]
-            [
-                column[spacingXY 0 10, width <| fill ]
-                    [
-                        paragraph[Font.size 14, Font.alignLeft]
-                            [ 
-                                 text "SUBLET"
-                            ]
-                    ]
-                ,column[spacingXY 0 10, width <| fill ]
-                    [
-                        paragraph[Font.size 14, Font.alignRight]
-                            [ 
-                                 text "$64.00"
-                            ]
-                    ]
-            ]
-            ,row[width fill, paddingEach {edges | right = 75, top = 8, left = 5, bottom = 10}
-                ,Font.alignLeft, spaceEvenly
-                , Border.color <| rgb255 237 45 45
-                ,Background.color <| rgb255 225 225 225 ]
-            [
-                column[spacingXY 0 10, width <| fill ]
-                    [
-                        paragraph[Font.size 14, Font.alignLeft]
-                            [ 
-                                 text "SHOP SUPPLIES"
-                            ]
-                    ]
-                ,column[spacingXY 0 10, width <| fill ]
-                    [
-                        paragraph[Font.size 14, Font.alignRight]
-                            [ 
-                                 text "$13.00"
-                            ]
-                    ]
-            ]
+            -- ,row[width fill, paddingEach {edges | right = 75, top = 25, left = 5}
+            --     ,Font.alignLeft, spaceEvenly
+            --     , Border.color <| rgb255 237 45 45
+            --     ,Background.color <| rgb255 225 225 225 ]
+            -- [
+            --      column[spacingXY 0 10, width <| fill ]
+            --         [
+            --             paragraph[Font.size 14, Font.alignLeft, Font.semiBold]
+            --                 [ 
+            --                      text "CHARGE TYPE"
+            --                 ]
+            --         ]
+            --     ,
+            --     column[spacingXY 0 10, width <| fill ]
+            --         [
+            --             paragraph[Font.size 14, Font.alignRight, Font.semiBold]
+            --                 [ 
+            --                      text "AMOUNT"
+            --                 ]
+            --         ]
+            -- ]
+            -- ,row[width fill, paddingEach {edges | right = 75, top = 15, left = 5}
+            --     ,Font.alignLeft, spaceEvenly
+            --     , Border.color <| rgb255 237 45 45
+            --     ,Background.color <| rgb255 225 225 225 ]
+            -- [
+            --     column[spacingXY 0 10, width <| fill ]
+            --         [
+            --             paragraph[Font.size 14, Font.alignLeft]
+            --                 [ 
+            --                      text "LABOR"
+            --                 ]
+            --         ]
+            --     ,column[spacingXY 0 10, width <| fill ]
+            --         [
+            --             paragraph[Font.size 14, Font.alignRight]
+            --                 [ 
+            --                      text "$173.00"
+            --                 ]
+            --         ]
+            -- ]
+            -- ,row[width fill, paddingEach {edges | right = 75, top = 8, left = 5}
+            --     ,Font.alignLeft, spaceEvenly
+            --     , Border.color <| rgb255 237 45 45
+            --     ,Background.color <| rgb255 225 225 225 ]
+            -- [
+            --     column[spacingXY 0 10, width <| fill ]
+            --         [
+            --             paragraph[Font.size 14, Font.alignLeft]
+            --                 [ 
+            --                      text "PARTS"
+            --                 ]
+            --         ]
+            --     ,column[spacingXY 0 10, width <| fill ]
+            --         [
+            --             paragraph[Font.size 14, Font.alignRight]
+            --                 [ 
+            --                      text "$13.00"
+            --                 ]
+            --         ]
+            -- ]
+            -- ,row[width fill, paddingEach {edges | right = 75, top = 8, left = 5}
+            --     ,Font.alignLeft, spaceEvenly
+            --     , Border.color <| rgb255 237 45 45
+            --     ,Background.color <| rgb255 225 225 225 ]
+            -- [
+            --     column[spacingXY 0 10, width <| fill ]
+            --         [
+            --             paragraph[Font.size 14, Font.alignLeft]
+            --                 [ 
+            --                      text "FRIEGHT"
+            --                 ]
+            --         ]
+            --     ,column[spacingXY 0 10, width <| fill ]
+            --         [
+            --             paragraph[Font.size 14, Font.alignRight]
+            --                 [ 
+            --                      text "$243.00"
+            --                 ]
+            --         ]
+            -- ]
+            -- ,row[width fill, paddingEach {edges | right = 75, top = 8, left = 5}
+            --     ,Font.alignLeft, spaceEvenly
+            --     , Border.color <| rgb255 237 45 45
+            --     ,Background.color <| rgb255 225 225 225 ]
+            -- [
+            --     column[spacingXY 0 10, width <| fill ]
+            --         [
+            --             paragraph[Font.size 14, Font.alignLeft]
+            --                 [ 
+            --                      text "SUBLET"
+            --                 ]
+            --         ]
+            --     ,column[spacingXY 0 10, width <| fill ]
+            --         [
+            --             paragraph[Font.size 14, Font.alignRight]
+            --                 [ 
+            --                      text "$64.00"
+            --                 ]
+            --         ]
+            -- ]
+            -- ,row[width fill, paddingEach {edges | right = 75, top = 8, left = 5, bottom = 10}
+            --     ,Font.alignLeft, spaceEvenly
+            --     , Border.color <| rgb255 237 45 45
+            --     ,Background.color <| rgb255 225 225 225 ]
+            -- [
+            --     column[spacingXY 0 10, width <| fill ]
+            --         [
+            --             paragraph[Font.size 14, Font.alignLeft]
+            --                 [ 
+            --                      text "SHOP SUPPLIES"
+            --                 ]
+            --         ]
+            --     ,column[spacingXY 0 10, width <| fill ]
+            --         [
+            --             paragraph[Font.size 14, Font.alignRight]
+            --                 [ 
+            --                      text "$13.00"
+            --                 ]
+            --         ]
+            -- ]
 
         ]
 
