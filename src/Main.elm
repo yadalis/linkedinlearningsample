@@ -62,18 +62,18 @@ init _=
             , branchDepartmentNumber = 370
             , branchPhoneNumber = "234-234-6345"
             , customerName =" FedEx"
-            , customerAddressLine1 = "asdfasdfasdf"
-            , customerAddressLine2 = "asdfasdfasdf"
-            , customerPhoneNumber = "asdfasfasdfasdf"
-            , unitNumber = "asdfasfasdfasdf"
-            , unitVehicleIdNumber = "asdfasfasdfasdf"
+            , customerAddressLine1 = "4860 College Blvd"
+            , customerAddressLine2 = "Leadwood KS 66211"
+            , customerPhoneNumber = "81-423-5255"
+            , unitNumber = "UN-153345"
+            , unitVehicleIdNumber = "1NXZASRTQWE$TERG"
             , year = 2018
-            , make = "asdfasfasdfasdf"
-            , model = "asdfasfasdfasdf"
+            , make = "Kenworth"
+            , model = "T-880"
             , mileage = 23452345
-            , engineMake = "asdfasfasdfasdf"
-            , engineModel = "asdfasfasdfasdf"
-            , engineSerial = "asdfasfasdfasdf"
+            , engineMake = "Paccar"
+            , engineModel = "PC-X345344"
+            , engineSerial = "WE$TERG"
             , jobSteps = [
                     JobStep 1 "OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES" " OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES LEAKING."
                             [VMRS "119-03-01-05-132" "Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo" 12.5
@@ -174,19 +174,19 @@ optionsPanel model =
                 , label = Input.labelLeft [] (el [] <| text (if model.showParts then "Hide Parts : " else "Show Parts : "))
                 , checked = model.showParts
             }
-            ,Input.radio
-                [ padding 10
-                , spacing 20
-                ]
-                    { onChange = RB
-                    , selected = Just model.selectedChoise
-                    , label = Input.labelAbove [] (el [] <| text "Lunch ")
-                    , options =
-                        [  
-                        Input.option "Taco" (text "Taco!")
-                        , Input.option "Gyro" (text "Gyro")
-                        ]
-                    }           
+            -- ,Input.radio
+            --     [ padding 10
+            --     , spacing 20
+            --     ]
+            --         { onChange = RB
+            --         , selected = Just model.selectedChoise
+            --         , label = Input.labelAbove [] (el [] <| text "Lunch ")
+            --         , options =
+            --             [  
+            --             Input.option "Taco" (text "Taco!")
+            --             , Input.option "Gyro" (text "Gyro")
+            --             ]
+            --         }           
         ]
 
 estimatePanel : RepairOrder -> Element Msg
