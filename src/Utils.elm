@@ -8,21 +8,21 @@ import Http
 import Data.Difficulty exposing (..)
 import Data.Question exposing (..)
 
-
-
 type Msg
     = VMRSContentIsRequired
     | RB String
     | ShowVMRSCodes Bool
     | ShowParts Bool
+    | ShowJobStep Bool Int
     
 type alias JobStep =
-    { 
-          number : Int
-          ,customerComplaint : String
-          ,correction : String
-          ,vmrsCodes : List VMRS
-          ,parts : List Part
+    {   
+        number : Int
+        ,customerComplaint : String
+        ,correction : String
+        ,vmrsCodes : List VMRS
+        ,parts : List Part
+        ,isPresentable : Bool
     }
 
 type alias VMRS =

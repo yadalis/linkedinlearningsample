@@ -299,7 +299,7 @@ unitInfoView model =
                     --     }   
             --]
 
-jobStepInfoView : JobStep -> Bool -> Bool -> Element Msg
+--jobStepInfoView : JobStep -> Bool -> Bool -> Element Msg
 jobStepInfoView jobStep canShowVMRSCodes canShowParts =
         column[width fill]
         [

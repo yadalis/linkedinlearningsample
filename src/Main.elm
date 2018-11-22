@@ -44,19 +44,19 @@ type alias RepairOrder =
         , selectedChoise : String
     }
 
-type alias JobStep =
-    { 
-          number : Int
-          ,customerComplaint : String
-          ,correction : String
-          ,vmrsCodes : List VMRS
-          ,parts : List Part
-    }
+-- type alias JobStep =
+--     { 
+--           number : Int
+--           ,customerComplaint : String
+--           ,correction : String
+--           ,vmrsCodes : List VMRS
+--           ,parts : List Part
+--     }
 
-init : () -> (RepairOrder, Cmd Msg)
+--init : () -> (RepairOrder, Cmd Msg)
 init _=
      ( 
-         {
+        {
              repairOrderNumber = 30189
             , branchNumber = 20
             , branchDepartmentNumber = 370
@@ -75,21 +75,36 @@ init _=
             , engineModel = "PC-X345344"
             , engineSerial = "WE$TERG"
             , jobSteps = [
-                    JobStep 1 "OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES" " OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES LEAKING."
+                    -- correction : String
+                    -- ,customerComplaint : String
+                    -- ,isPresentable : Bool
+                    -- ,number : Int
+                    -- ,parts : List Part
+                    -- ,vmrsCodes : List VMRS
+                        
+                    JobStep 
+                            1 
+                            "OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES"
+                            " OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES LEAKING."                            
                             [VMRS "119-03-01-05-132" "Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo" 12.5
-                            , VMRS "119-031-011-015-132" "Brakes and Cluth combo " 14.0
-                            , VMRS "219-031-011-015-132" "Brakes and Cluth combo " 16.5]
-                            [Part 1 "P1asdfasdfasdfasdf34343434343asdgsadgsdgf asdfasdfasdf asdfasdfasdfasdfasfasdf asdfasfasfasdfasdf asdfas" "OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES OIL COOLER HOUSING GASKET AND AIR", Part 2 "Brakes and Cluth combo" "OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES" , Part 5 "P3asd" "Part 3"]
+                                , VMRS "119-031-011-015-132" "Brakes and Cluth combo " 14.0
+                                , VMRS "219-031-011-015-132" "Brakes and Cluth combo " 16.5]
+                            [Part 1 "P1asdfasdfasdfasdf34343434343asdgsadgsdgf asdfasdfasdf asdfasdfasdfasdfasfasdf asdfasfasfasdfasdf asdfas" "OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES OIL COOLER HOUSING GASKET AND AIR"
+                                , Part 2 "Brakes and Cluth combo" "OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES" 
+                                , Part 5 "P3asd" "Part 3"]
+                            True
                     ,JobStep 2 "POWER STEERING PUMP AND STEERING GEAR BOX LEAKING." "POWER STEERING PUMP AND STEERING GEAR BOX LEAKING."
                              [VMRS "119-03-01-05-132" "Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo" 12.5
                             , VMRS "119-031-011-015-132" "Brakes and Cluth combo " 14.0
                             , VMRS "219-031-011-015-132" "Brakes and Cluth combo " 16.5]
                              [Part 1 "P1asdfasdfasdfasdf34343434343asdgsadgsdgf asdfasdfasdf asdfasdfasdfasdfasfasdf asdfasfasfasdfasdf asdfas" "OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES OIL COOLER HOUSING GASKET AND AIR", Part 2 "Brakes and Cluth combo" "OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES" , Part 5 "P3asd" "Part 3"]
+                            True
                     ,JobStep 3 "PICK UP AND DELIVER" "PICK UP AND DELIVER"
                              [VMRS "119-03-01-05-132" "Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo" 12.5
                             , VMRS "119-031-011-015-132" "Brakes and Cluth combo " 14.0
                             , VMRS "219-031-011-015-132" "Brakes and Cluth combo " 16.5]
                              [Part 1 "P1asdfasdfasdfasdf34343434343asdgsadgsdgf asdfasdfasdf asdfasdfasdfasdfasfasdf asdfasfasfasdfasdf asdfas" "OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES OIL COOLER HOUSING GASKET AND AIR", Part 2 "Brakes and Cluth combo" "OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES" , Part 5 "P3asd" "Part 3"]
+                            False
                 ]
             , showVMRSCodes = False
             , showParts = False
@@ -108,6 +123,11 @@ update msg model =
         
         RB str ->
             ( {model | selectedChoise = str}, Cmd.none)
+
+        ShowJobStep canShowJobStep jsNumber ->
+            ( -- First style
+            model
+            , Cmd.none)
 
         VMRSContentIsRequired  ->
            ( model, Cmd.none)
@@ -157,23 +177,30 @@ optionsPanel model =
         , paddingXY 10 10
         , Background.color <| rgb255 225 225 225
         --, Font.color <| rgb255 25 25 25
+        ,spacingXY 0 15
         , alignTop
         ]
         [
-            Input.checkbox [] {
+            row[Border.widthEach {edges | bottom = 2}, width fill, paddingEach {edges | top = 25}]
+            [paragraph [Font.center, paddingXY 0 5] [text "Estimate generation options"] ]
+            ,Input.checkbox [Border.width 0 ] {
                 onChange = ShowVMRSCodes
                 ,icon = (\b ->
-                                if b == True then image [centerY, height <| px 45] {src = "uncheck.png", description ="Logo" } else image [centerY, height <| px 45] {src = "check.png", description ="Logo" })
-                , label = Input.labelLeft [] (el [] <| text (if model.showVMRSCodes then "Hide VMRS Codes : " else "Show VMRS Codes : "))
+                                if b == True then image [centerY] {src = "uncheck.png", description ="Logo" } else image [centerY] {src = "check.png", description ="Logo" })
+                , label = Input.labelLeft [alignRight] (el [paddingXY 10 0, alignLeft] <| text (if model.showVMRSCodes then "Hide VMRS Codes : " else "Show VMRS Codes : "))
+                --, label = Input.labelLeft [alignRight] (el [] <| none)
                 , checked = model.showVMRSCodes
             }
-            ,Input.checkbox [] {
+            ,Input.checkbox [Border.width 0 ]{
                 onChange = ShowParts
                 ,icon = (\b ->
-                                if b == True then image [centerY, height <| px 45] {src = "uncheck.png", description ="Logo" } else image [centerY, height <| px 45] {src = "check.png", description ="Logo" })
-                , label = Input.labelLeft [] (el [] <| text (if model.showParts then "Hide Parts : " else "Show Parts : "))
+                                if b == True then image [centerY] {src = "uncheck.png", description ="Logo" } else image [centerY] {src = "check.png", description ="Logo" })
+                , label = Input.labelLeft [alignRight] (el [paddingXY 10 0, alignLeft] <| text (if model.showParts then "Hide Parts : " else "Show Parts : "))
                 , checked = model.showParts
             }
+            ,
+                column[spacingXY 0 5, width fill]
+                 (List.map jobStepOption model.jobSteps)
             -- ,Input.radio
             --     [ padding 10
             --     , spacing 20
@@ -188,6 +215,16 @@ optionsPanel model =
             --             ]
             --         }           
         ]
+
+jobStepOption : JobStep -> Element Msg
+jobStepOption jobStep =
+            Input.checkbox [Border.width 0 ] {
+                onChange = (\b -> ShowJobStep b jobStep.number)
+                ,icon = (\b ->
+                                if b == True then image [centerY] {src = "uncheck.png", description ="Logo" } else image [centerY] {src = "check.png", description ="Logo" })
+                , label = Input.labelLeft [alignRight] (el [paddingXY 10 0, alignLeft] <| text (if jobStep.isPresentable then "Show JobStep# " ++ String.fromInt jobStep.number else "Hide JobStep# " ++ String.fromInt jobStep.number))
+                , checked = jobStep.isPresentable
+            }
 
 estimatePanel : RepairOrder -> Element Msg
 estimatePanel model =
