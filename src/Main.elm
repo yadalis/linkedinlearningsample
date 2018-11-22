@@ -10,6 +10,7 @@ import Element.Input as Input
 import Html exposing (Html)
 import Task
 import Utils exposing (..)
+import Array exposing (Array)
 
 import View.ROEstimateHeaderView exposing (..)
 
@@ -38,7 +39,7 @@ type alias RepairOrder =
         , engineMake : String
         , engineModel : String
         , engineSerial : String
-        , jobSteps : List JobStep
+        , jobSteps : Array JobStep
         , showVMRSCodes : Bool
         , showParts : Bool
         , selectedChoise : String
@@ -74,14 +75,14 @@ init _=
             , engineMake = "Paccar"
             , engineModel = "PC-X345344"
             , engineSerial = "WE$TERG"
-            , jobSteps = [
+            , jobSteps =  (Array.fromList[
                     -- correction : String
                     -- ,customerComplaint : String
                     -- ,isPresentable : Bool
                     -- ,number : Int
                     -- ,parts : List Part
                     -- ,vmrsCodes : List VMRS
-                        
+                    
                     JobStep 
                             1 
                             "OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES"
@@ -106,6 +107,7 @@ init _=
                              [Part 1 "P1asdfasdfasdfasdf34343434343asdgsadgsdgf asdfasdfasdf asdfasdfasdfasdfasfasdf asdfasfasfasdfasdf asdfas" "OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES OIL COOLER HOUSING GASKET AND AIR", Part 2 "Brakes and Cluth combo" "OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES" , Part 5 "P3asd" "Part 3"]
                             False
                 ]
+            )
             , showVMRSCodes = False
             , showParts = False
             , selectedChoise = "Tryo"
@@ -126,7 +128,12 @@ update msg model =
 
         ShowJobStep canShowJobStep jsNumber ->
             ( -- First style
-            model
+             model.jobSteps
+                |> Array.get jsNumber
+                |> Maybe.map (\q -> {q | isPresentable = canShowJobStep})
+                |> Maybe.map (\q -> Array.set jsNumber q model.jobSteps)
+                |> Maybe.map (\arr -> {model | jobSteps = arr})
+                |> Maybe.withDefault model
             , Cmd.none)
 
         VMRSContentIsRequired  ->
@@ -170,37 +177,59 @@ optionsPanel model =
                     )
                     
                     <| text ("#   " )
+        
+        --ele = if (Array.length model.jobSteps) == Array.length (Array.filter (\js -> js.isPresentable == True) model.jobSteps ) then
+        vmrspartsOPtions = if Array.length (Array.filter (\js -> js.isPresentable == True) model.jobSteps ) > 0 then
+                    column[spacingXY 0 5, alignRight]
+                    [
+                        Input.checkbox [Border.width 0 ] {
+                            onChange = ShowVMRSCodes
+                            ,icon = (\b ->
+                                            if b == True then image [centerY] {src = "uncheck.png", description ="Logo" } else image [centerY] {src = "check.png", description ="Logo" })
+                            , label = Input.labelLeft [alignRight] (el [paddingXY 0 0, alignLeft] <| text (if model.showVMRSCodes then "Hide VMRS Codes" else "Show VMRS Codes"))
+                            --, label = Input.labelLeft [alignRight] (el [] <| none)
+                            , checked = model.showVMRSCodes
+                        }
+                        ,Input.checkbox [Border.width 0 ]{
+                            onChange = ShowParts
+                            ,icon = (\b ->
+                                            if b == True then image [centerY] {src = "uncheck.png", description ="Logo" } else image [centerY] {src = "check.png", description ="Logo" })
+                            , label = Input.labelLeft [alignRight] (el [paddingEach {edges | right = 5}, alignLeft] <| text (if model.showParts then "Hide Parts" else "Show Parts"))
+                            , checked = model.showParts
+                        }
+                    ]
+                else
+                    none
     in
     column
-        [  height fill,
-         width <| fill
+        [  height fill
+        , width fill
         , paddingXY 10 10
         , Background.color <| rgb255 225 225 225
         --, Font.color <| rgb255 25 25 25
         ,spacingXY 0 15
-        , alignTop
+  
         ]
         [
             row[Border.widthEach {edges | bottom = 2}, width fill, paddingEach {edges | top = 25}]
             [paragraph [Font.center, paddingXY 0 5] [text "Estimate generation options"] ]
-            ,Input.checkbox [Border.width 0 ] {
-                onChange = ShowVMRSCodes
-                ,icon = (\b ->
-                                if b == True then image [centerY] {src = "uncheck.png", description ="Logo" } else image [centerY] {src = "check.png", description ="Logo" })
-                , label = Input.labelLeft [alignRight] (el [paddingXY 10 0, alignLeft] <| text (if model.showVMRSCodes then "Hide VMRS Codes : " else "Show VMRS Codes : "))
-                --, label = Input.labelLeft [alignRight] (el [] <| none)
-                , checked = model.showVMRSCodes
-            }
-            ,Input.checkbox [Border.width 0 ]{
-                onChange = ShowParts
-                ,icon = (\b ->
-                                if b == True then image [centerY] {src = "uncheck.png", description ="Logo" } else image [centerY] {src = "check.png", description ="Logo" })
-                , label = Input.labelLeft [alignRight] (el [paddingXY 10 0, alignLeft] <| text (if model.showParts then "Hide Parts : " else "Show Parts : "))
-                , checked = model.showParts
-            }
-            ,
-                column[spacingXY 0 5, width fill]
-                 (List.map jobStepOption model.jobSteps)
+           
+           
+            ,row[Border.widthEach {edges | bottom = 1}, width fill, paddingEach {edges | top = 5}]
+            [paragraph [Font.alignLeft, paddingXY 0 5] [text "Jobsteps"] ]
+           
+            ,column[spacingXY 0 5, alignRight]
+                 (List.indexedMap jobStepOption (Array.toList model.jobSteps) )
+
+            -- ,row[Border.widthEach {edges | bottom = 2}, width fill, paddingEach {edges | top = 25}]
+            -- [paragraph [Font.center, paddingXY 0 5] [none] ]
+
+            ,row[Border.widthEach {edges | bottom = 1}, width fill, paddingEach {edges | top = 5}]
+            [paragraph [Font.alignLeft, paddingXY 0 5] [text "Extra info"] ]
+
+            ,vmrspartsOPtions
+
+
             -- ,Input.radio
             --     [ padding 10
             --     , spacing 20
@@ -216,33 +245,37 @@ optionsPanel model =
             --         }           
         ]
 
-jobStepOption : JobStep -> Element Msg
-jobStepOption jobStep =
+jobStepOption : Int -> JobStep -> Element Msg
+jobStepOption index jobStep =
             Input.checkbox [Border.width 0 ] {
-                onChange = (\b -> ShowJobStep b jobStep.number)
+                onChange = (\b -> ShowJobStep b index)
                 ,icon = (\b ->
                                 if b == True then image [centerY] {src = "uncheck.png", description ="Logo" } else image [centerY] {src = "check.png", description ="Logo" })
-                , label = Input.labelLeft [alignRight] (el [paddingXY 10 0, alignLeft] <| text (if jobStep.isPresentable then "Show JobStep# " ++ String.fromInt jobStep.number else "Hide JobStep# " ++ String.fromInt jobStep.number))
+                , label = Input.labelLeft [alignRight] (el [paddingEach {edges | right = 5}, alignLeft] <| text (if jobStep.isPresentable then "Hide JobStep# " ++ String.fromInt jobStep.number else "Show JobStep# " ++ String.fromInt jobStep.number))
                 , checked = jobStep.isPresentable
             }
 
 estimatePanel : RepairOrder -> Element Msg
 estimatePanel model =
-        column [height fill,  width <| fillPortion 4,  paddingXY 10 10, Border.widthEach {edges | left = 1}]
-        [
-            row[width fill]
-                [roEstimateHeaderView model.repairOrderNumber]
-            ,column[scrollbarY]
+        let
+            lst =    List.filter (\js -> js.isPresentable)  (Array.toList model.jobSteps)
+        in
+        
+            column [height fill,  width <| fillPortion 4,  paddingXY 10 10, Border.widthEach {edges | left = 1}]
             [
-                roInfoView model.repairOrderNumber model.branchNumber model.branchDepartmentNumber model.branchPhoneNumber
-                ,customerInfoView model.customerName model.customerAddressLine1 model.customerAddressLine2 model.customerPhoneNumber
-                ,unitInfoView model
-                ,column[width fill]
-                                (List.map3 jobStepInfoView model.jobSteps (List.repeat (List.length model.jobSteps) model.showVMRSCodes ) (List.repeat (List.length model.jobSteps) model.showParts ) )
+                row[width fill]
+                    [roEstimateHeaderView model.repairOrderNumber]
+                ,column[scrollbarY]
+                [
+                    roInfoView model.repairOrderNumber model.branchNumber model.branchDepartmentNumber model.branchPhoneNumber
+                    ,customerInfoView model.customerName model.customerAddressLine1 model.customerAddressLine2 model.customerPhoneNumber
+                    ,unitInfoView model
+                    ,column[width fill]
+                                    (List.map3 jobStepInfoView lst (List.repeat (Array.length model.jobSteps) model.showVMRSCodes ) (List.repeat (Array.length model.jobSteps) model.showParts ) )
 
-                ,estimateNotesAndGrandTotalsView model
+                    ,estimateNotesAndGrandTotalsView model
+                ]
             ]
-        ]
 
                     
 -- this is just to send a message back in to update function when there are no side-effects needed and just a way to put the message back in to update function
