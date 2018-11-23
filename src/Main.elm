@@ -14,12 +14,6 @@ import Array exposing (Array)
 
 import View.ROEstimateHeaderView exposing (..)
 
--- type alias Model
---     = {
---         repairOrder : RepairOrder
---     }
-
-
 type alias RepairOrder =
     { 
           repairOrderNumber : Int
@@ -45,16 +39,7 @@ type alias RepairOrder =
         , selectedChoise : String
     }
 
--- type alias JobStep =
---     { 
---           number : Int
---           ,customerComplaint : String
---           ,correction : String
---           ,vmrsCodes : List VMRS
---           ,parts : List Part
---     }
-
---init : () -> (RepairOrder, Cmd Msg)
+init : () -> (RepairOrder, Cmd Msg)
 init _=
      ( 
         {
@@ -76,13 +61,6 @@ init _=
             , engineModel = "PC-X345344"
             , engineSerial = "WE$TERG"
             , jobSteps =  (Array.fromList[
-                    -- correction : String
-                    -- ,customerComplaint : String
-                    -- ,isPresentable : Bool
-                    -- ,number : Int
-                    -- ,parts : List Part
-                    -- ,vmrsCodes : List VMRS
-                    
                     JobStep 
                             1 
                             "OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES"
@@ -151,50 +129,37 @@ view  model =
                     optionsPanel model
                     , estimatePanel model
                 ]
-        
+
+buildChkBoxImage falg =
+
+        if falg == True then 
+            image [centerY] {src = "uncheck.png", description ="Logo" } 
+
+        else 
+            image [centerY] {src = "check.png", description ="Logo" }
+
 optionsPanel : RepairOrder -> Element Msg
 optionsPanel model =
     let
-        activeChannelAttrs =
-            [ Background.color <| rgb255 117 179 201, Font.bold ]
-
-        channelAttrs =
-            [ 
-                paddingXY 15 5, width fill, Font.alignLeft, mouseOver [ Background.color <| rgb255 86 182 139], pointer
-            ]
-
-        channelEl {name, index} =
-                el -- div
-                    (
-                        --if name == getSelectedChannelName selectedChannel then  -- this if stmt produces a list by combining the attrs from activeChannelAttrs and channelAttrs
-                        
-                        --comparing the index values gives more uniqueness to the selction of channels, that is 
-                        --if the list of channels contains duplicate channel names, this IF will ensure to select only the clicked channel name
-                        --event though the list has other channels with the same name
-                        --, but if you use the above IF which compares name with name, then the selecting a duplicate channel name will select all of those
-                        --channels, which isnt desired....
-                     channelAttrs
-                    )
-                    
-                    <| text ("#   " )
-        
         --ele = if (Array.length model.jobSteps) == Array.length (Array.filter (\js -> js.isPresentable == True) model.jobSteps ) then
-        vmrspartsOPtions = if Array.length (Array.filter (\js -> js.isPresentable == True) model.jobSteps ) > 0 then
+        extraOPtions = if Array.length (Array.filter (\js -> js.isPresentable == True) model.jobSteps ) > 0 then
                     column[spacingXY 0 5, alignRight]
                     [
                         Input.checkbox [Border.width 0 ] {
                             onChange = ShowVMRSCodes
-                            ,icon = (\b ->
-                                            if b == True then image [centerY] {src = "uncheck.png", description ="Logo" } else image [centerY] {src = "check.png", description ="Logo" })
-                            , label = Input.labelLeft [alignRight] (el [paddingXY 0 0, alignLeft] <| text (if model.showVMRSCodes then "Hide VMRS Codes" else "Show VMRS Codes"))
+                            ,icon = 
+                                    --buildChkBoxImage -- True/False gets passed to the flag parameter in buildChkBoxImage function automatically, if u need to pass
+                                                        -- more than 1 parameter, then you need to do the below code
+                                    (\b ->
+                                        buildChkBoxImage b)
+                            , label = Input.labelLeft [alignRight] (el [] <| text (if model.showVMRSCodes then "Hide VMRS Codes" else "Show VMRS Codes"))
                             --, label = Input.labelLeft [alignRight] (el [] <| none)
                             , checked = model.showVMRSCodes
                         }
                         ,Input.checkbox [Border.width 0 ]{
                             onChange = ShowParts
-                            ,icon = (\b ->
-                                            if b == True then image [centerY] {src = "uncheck.png", description ="Logo" } else image [centerY] {src = "check.png", description ="Logo" })
-                            , label = Input.labelLeft [alignRight] (el [paddingEach {edges | right = 5}, alignLeft] <| text (if model.showParts then "Hide Parts" else "Show Parts"))
+                            ,icon = buildChkBoxImage
+                            , label = Input.labelLeft [alignRight] (el [] <| text (if model.showParts then "Hide Parts" else "Show Parts"))
                             , checked = model.showParts
                         }
                     ]
@@ -206,7 +171,6 @@ optionsPanel model =
         , width fill
         , paddingXY 10 10
         , Background.color <| rgb255 225 225 225
-        --, Font.color <| rgb255 25 25 25
         ,spacingXY 0 15
   
         ]
@@ -214,44 +178,24 @@ optionsPanel model =
             row[Border.widthEach {edges | bottom = 2}, width fill, paddingEach {edges | top = 25}]
             [paragraph [Font.center, paddingXY 0 5] [text "Estimate generation options"] ]
            
-           
             ,row[Border.widthEach {edges | bottom = 1}, width fill, paddingEach {edges | top = 5}]
             [paragraph [Font.alignLeft, paddingXY 0 5] [text "Jobsteps"] ]
            
             ,column[spacingXY 0 5, alignRight]
-                 (List.indexedMap jobStepOption (Array.toList model.jobSteps) )
-
-            -- ,row[Border.widthEach {edges | bottom = 2}, width fill, paddingEach {edges | top = 25}]
-            -- [paragraph [Font.center, paddingXY 0 5] [none] ]
+                 (List.indexedMap jobStepOptions (Array.toList model.jobSteps) )
 
             ,row[Border.widthEach {edges | bottom = 1}, width fill, paddingEach {edges | top = 5}]
             [paragraph [Font.alignLeft, paddingXY 0 5] [text "Extra info"] ]
 
-            ,vmrspartsOPtions
-
-
-            -- ,Input.radio
-            --     [ padding 10
-            --     , spacing 20
-            --     ]
-            --         { onChange = RB
-            --         , selected = Just model.selectedChoise
-            --         , label = Input.labelAbove [] (el [] <| text "Lunch ")
-            --         , options =
-            --             [  
-            --             Input.option "Taco" (text "Taco!")
-            --             , Input.option "Gyro" (text "Gyro")
-            --             ]
-            --         }           
+            ,extraOPtions       
         ]
 
-jobStepOption : Int -> JobStep -> Element Msg
-jobStepOption index jobStep =
+jobStepOptions : Int -> JobStep -> Element Msg
+jobStepOptions index jobStep =
             Input.checkbox [Border.width 0 ] {
-                onChange = (\b -> ShowJobStep b index)
-                ,icon = (\b ->
-                                if b == True then image [centerY] {src = "uncheck.png", description ="Logo" } else image [centerY] {src = "check.png", description ="Logo" })
-                , label = Input.labelLeft [alignRight] (el [paddingEach {edges | right = 5}, alignLeft] <| text (if jobStep.isPresentable then "Hide JobStep# " ++ String.fromInt jobStep.number else "Show JobStep# " ++ String.fromInt jobStep.number))
+                onChange = (\bool -> ShowJobStep bool index)
+                ,icon = buildChkBoxImage
+                , label = Input.labelLeft [alignRight] (el [] <| text (if jobStep.isPresentable then "Hide JobStep# " ++ String.fromInt jobStep.number else "Show JobStep# " ++ String.fromInt jobStep.number))
                 , checked = jobStep.isPresentable
             }
 
