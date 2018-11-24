@@ -131,17 +131,6 @@ view  model =
                     , estimatePanel model
                 ]
 
-buildChkBoxImage falg =
-        -- if falg == True then 
-        --     image [centerY, hpx 24] {src = "uncheck.png", description ="Logo" } 
-        -- else 
-        --     image [centerY, hpx 24] {src = "check.png", description ="Logo" }
-
-        if falg == True then 
-            image [hpx 0] {src = "checked.png", description ="Logo" }
-        else 
-            el [hpx 0, wpx 0, bw 2, br 5] <| none
-
 optionsPanel : RepairOrder -> Element Msg
 optionsPanel model =
     let
@@ -193,21 +182,11 @@ optionsPanel model =
             ,extraOPtions       
         ]
 
-jobStepOptions : Int -> JobStep -> Element Msg
-jobStepOptions index jobStep =
-            Input.checkbox [bw 0 ] {
-                onChange = (\bool -> ShowJobStep bool index)
-                ,icon = buildChkBoxImage
-                , label = Input.labelLeft [alignRight] (el [] <| text (if jobStep.isPresentable then "Hide JobStep# " ++ String.fromInt jobStep.number else "Show JobStep# " ++ String.fromInt jobStep.number))
-                , checked = jobStep.isPresentable
-            }
-
 estimatePanel : RepairOrder -> Element Msg
 estimatePanel model =
         let
             jobStepsToShow =    List.filter (\js -> js.isPresentable)  (Array.toList model.jobSteps)
         in
-        
             column [hf,  wfp 4,  pd 10, bwe 0 0 0 1]
             [
                 row[wf]
@@ -224,7 +203,26 @@ estimatePanel model =
                 ]
             ]
 
-                    
+jobStepOptions : Int -> JobStep -> Element Msg
+jobStepOptions index jobStep =
+            Input.checkbox [bw 0 ] {
+                onChange = (\bool -> ShowJobStep bool index)
+                ,icon = buildChkBoxImage
+                , label = Input.labelLeft [alignRight] (el [] <| text (if jobStep.isPresentable then "Hide JobStep# " ++ String.fromInt jobStep.number else "Show JobStep# " ++ String.fromInt jobStep.number))
+                , checked = jobStep.isPresentable
+            }
+
+buildChkBoxImage falg =
+        -- if falg == True then 
+        --     image [centerY, hpx 24] {src = "uncheck.png", description ="Logo" } 
+        -- else 
+        --     image [centerY, hpx 24] {src = "check.png", description ="Logo" }
+
+        if falg == True then 
+            image [hpx 24] {src = "checked.png", description ="Logo" }
+        else 
+            el [hpx 24, wpx 24, bw 2, br 5] <| none
+           
 -- this is just to send a message back in to update function when there are no side-effects needed and just a way to put the message back in to update function
 sendMessage : msg -> Cmd msg
 sendMessage msg =

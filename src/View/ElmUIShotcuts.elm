@@ -14,59 +14,56 @@ edges =
     , left = 0
     }
 
+--Height
 hf = 
    height fill
-
 hfp number = 
-    if number == 1 then height fill else height <| fillPortion number
+    height <| fillPortion number
+hpx number
+    = height <| px number
 
+--Width
 wf = 
    width fill
-
-wfp number = 
-    if number == 1 then width fill else width <| fillPortion number
-
-sp number
-    =   spacing number
-
-spx number
-    =   spacingXY number 0
-
-spy number
-    =   spacingXY 0 number
-
-bw number
-    =   Border.width number
-
-bc red green blue 
-    =   Background.color <| rgb255 red green blue
-
-bwe top right bottom left
-    =   Border.widthEach    {top = top, right = right, bottom = bottom, left = left}
-
-pde top right bottom left
-    =   paddingEach    {top = top, right = right, bottom = bottom, left = left}
-
-pd number
-    =   padding number
-
-fal 
-    = Font.alignLeft
-
-far 
-    = Font.alignRight
-
-fac 
-    = Font.center
-
-hpx number
-    = height <| px 24
-
+wfp number 
+    = width <| fillPortion number
 wpx number
-    = width <| px 24
+    = width <| px number
 
+--Spacing
+sp number
+    = spacing number
+spx number
+    = spacingXY number 0
+spy number
+    = spacingXY 0 number
+
+-- Border
+bw number
+    = Border.width number
+bwe top right bottom left
+    = Border.widthEach    {top = top, right = right, bottom = bottom, left = left}
+brc red green blue 
+    = Border.color <| rgb255 red green blue
 br number
     = Border.rounded number
-
 bre topLeft topRight bottomLeft bottomRight
     = Border.roundEach   {topLeft = topLeft, topRight = topRight, bottomLeft = bottomLeft, bottomRight = bottomRight}
+
+--Background
+bc red green blue 
+    = Background.color <| rgb255 red green blue
+
+--Padding
+pde top right bottom left
+    = paddingEach    {top = top, right = right, bottom = bottom, left = left}
+pd number
+    = padding number
+
+--Font Alignments
+fal 
+    = Font.alignLeft
+far 
+    = Font.alignRight
+fac 
+    = Font.center
