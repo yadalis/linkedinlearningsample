@@ -6,6 +6,8 @@ import Element.Border as Border
 import Element.Font as Font
 import Utils exposing (..)
 
+import View.ElmUIShotcuts exposing (..)
+
 dataValueFont =
     Font.size 15
 

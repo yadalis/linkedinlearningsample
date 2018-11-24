@@ -7,12 +7,13 @@ import Element.Border as Border
 import Element.Events exposing (..)
 import Element.Font as Font
 import Element.Input as Input
-import Html exposing (Html)
+import Html exposing (Html, div)
 import Task
 import Utils exposing (..)
 import Array exposing (Array)
 
 import View.ROEstimateHeaderView exposing (..)
+import View.ElmUIShotcuts exposing (..)
 
 type alias RepairOrder =
     { 
@@ -104,12 +105,12 @@ update msg model =
         RB str ->
             ( {model | selectedChoise = str}, Cmd.none)
 
-        ShowJobStep canShowJobStep jsNumber ->
+        ShowJobStep canShowJobStep index ->
             ( -- First style
              model.jobSteps
-                |> Array.get jsNumber
-                |> Maybe.map (\q -> {q | isPresentable = canShowJobStep})
-                |> Maybe.map (\q -> Array.set jsNumber q model.jobSteps)
+                |> Array.get index
+                |> Maybe.map (\js -> {js | isPresentable = canShowJobStep})
+                |> Maybe.map (\js -> Array.set index js model.jobSteps)
                 |> Maybe.map (\arr -> {model | jobSteps = arr})
                 |> Maybe.withDefault model
             , Cmd.none)
@@ -123,29 +124,32 @@ main =
 
 view : RepairOrder -> Html Msg
 view  model =
-    layout [height fill] <|
-            row [ height fill, width fill, Border.glow (rgb255 244 65 65) 0]
+    layout [hf] <|
+            row [ hf, wf]
                 [ 
                     optionsPanel model
                     , estimatePanel model
                 ]
 
 buildChkBoxImage falg =
+        -- if falg == True then 
+        --     image [centerY, hpx 24] {src = "uncheck.png", description ="Logo" } 
+        -- else 
+        --     image [centerY, hpx 24] {src = "check.png", description ="Logo" }
 
         if falg == True then 
-            image [centerY] {src = "uncheck.png", description ="Logo" } 
-
+            image [hpx 0] {src = "checked.png", description ="Logo" }
         else 
-            image [centerY] {src = "check.png", description ="Logo" }
+            el [hpx 0, wpx 0, bw 2, br 5] <| none
 
 optionsPanel : RepairOrder -> Element Msg
 optionsPanel model =
     let
         --ele = if (Array.length model.jobSteps) == Array.length (Array.filter (\js -> js.isPresentable == True) model.jobSteps ) then
         extraOPtions = if Array.length (Array.filter (\js -> js.isPresentable == True) model.jobSteps ) > 0 then
-                    column[spacingXY 0 5, alignRight]
+                    column[spy 5, alignRight]
                     [
-                        Input.checkbox [Border.width 0 ] {
+                        Input.checkbox [bw 0 ] {
                             onChange = ShowVMRSCodes
                             ,icon = 
                                     --buildChkBoxImage -- True/False gets passed to the flag parameter in buildChkBoxImage function automatically, if u need to pass
@@ -156,7 +160,7 @@ optionsPanel model =
                             --, label = Input.labelLeft [alignRight] (el [] <| none)
                             , checked = model.showVMRSCodes
                         }
-                        ,Input.checkbox [Border.width 0 ]{
+                        ,Input.checkbox [bw 0 ]{
                             onChange = ShowParts
                             ,icon = buildChkBoxImage
                             , label = Input.labelLeft [alignRight] (el [] <| text (if model.showParts then "Hide Parts" else "Show Parts"))
@@ -167,32 +171,31 @@ optionsPanel model =
                     none
     in
     column
-        [  height fill
-        , width fill
-        , paddingXY 10 10
-        , Background.color <| rgb255 225 225 225
-        ,spacingXY 0 15
-  
+        [  hf
+        , wf
+        , pd 10
+        , bc 225 225 225
+        , spy 5
         ]
         [
-            row[Border.widthEach {edges | bottom = 2}, width fill, paddingEach {edges | top = 25}]
-            [paragraph [Font.center, paddingXY 0 5] [text "Estimate generation options"] ]
+            row[bwe 0 0 2 0, wf, pde 25 0 0 0]
+            [paragraph [fac, pde 5 0 5 0] [text "Estimate generation options"] ]
            
-            ,row[Border.widthEach {edges | bottom = 1}, width fill, paddingEach {edges | top = 5}]
-            [paragraph [Font.alignLeft, paddingXY 0 5] [text "Jobsteps"] ]
+            ,row[bwe 0 0 1 0, wf, pde 15 0 0 0]
+            [paragraph [fal, pde 0 0 3 0] [text "Jobsteps"] ]
            
-            ,column[spacingXY 0 5, alignRight]
+            ,column[spy 5, alignRight]
                  (List.indexedMap jobStepOptions (Array.toList model.jobSteps) )
 
-            ,row[Border.widthEach {edges | bottom = 1}, width fill, paddingEach {edges | top = 5}]
-            [paragraph [Font.alignLeft, paddingXY 0 5] [text "Extra info"] ]
+            ,row[bwe 0 0 1 0, wf, pde 15 0 0 0]
+            [paragraph [fal, pde 0 0 3 0 ] [text "Extra info"] ]
 
             ,extraOPtions       
         ]
 
 jobStepOptions : Int -> JobStep -> Element Msg
 jobStepOptions index jobStep =
-            Input.checkbox [Border.width 0 ] {
+            Input.checkbox [bw 0 ] {
                 onChange = (\bool -> ShowJobStep bool index)
                 ,icon = buildChkBoxImage
                 , label = Input.labelLeft [alignRight] (el [] <| text (if jobStep.isPresentable then "Hide JobStep# " ++ String.fromInt jobStep.number else "Show JobStep# " ++ String.fromInt jobStep.number))
@@ -202,20 +205,20 @@ jobStepOptions index jobStep =
 estimatePanel : RepairOrder -> Element Msg
 estimatePanel model =
         let
-            lst =    List.filter (\js -> js.isPresentable)  (Array.toList model.jobSteps)
+            jobStepsToShow =    List.filter (\js -> js.isPresentable)  (Array.toList model.jobSteps)
         in
         
-            column [height fill,  width <| fillPortion 4,  paddingXY 10 10, Border.widthEach {edges | left = 1}]
+            column [hf,  wfp 4,  pd 10, bwe 0 0 0 1]
             [
-                row[width fill]
+                row[wf]
                     [roEstimateHeaderView model.repairOrderNumber]
                 ,column[scrollbarY]
                 [
                     roInfoView model.repairOrderNumber model.branchNumber model.branchDepartmentNumber model.branchPhoneNumber
                     ,customerInfoView model.customerName model.customerAddressLine1 model.customerAddressLine2 model.customerPhoneNumber
                     ,unitInfoView model
-                    ,column[width fill]
-                                    (List.map3 jobStepInfoView lst (List.repeat (Array.length model.jobSteps) model.showVMRSCodes ) (List.repeat (Array.length model.jobSteps) model.showParts ) )
+                    ,column[wf]
+                                    (List.map3 jobStepInfoView jobStepsToShow (List.repeat (Array.length model.jobSteps) model.showVMRSCodes ) (List.repeat (Array.length model.jobSteps) model.showParts ) )
 
                     ,estimateNotesAndGrandTotalsView model
                 ]
