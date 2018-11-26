@@ -7,7 +7,8 @@ import Element.Border as Border
 import Element.Events exposing (..)
 import Element.Font as Font
 import Element.Input as Input
-import Html exposing (Html, div)
+import Html  as HTM
+import Html.Attributes as HTMLAttr
 import Task
 import Utils exposing (..)
 import Array exposing (Array)
@@ -122,14 +123,37 @@ main: Program () RepairOrder Msg
 main = 
      Browser.element { init = init, update = update, view = view, subscriptions = always Sub.none }
 
-view : RepairOrder -> Html Msg
+view : RepairOrder -> HTM.Html Msg
 view  model =
     layout [hf] <|
-            row [ hf, wf]
-                [ 
-                    optionsPanel model
-                    , estimatePanel model
-                ]
+                   row[hf][
+                        optionsPanel model
+                        , estimatePanel model ]
+    -- HTM.div[][
+    --      HTM.div [ 
+    --             HTMLAttr.class  "flex bg-pink border-b-2 h-16 px-4 border-grey-lighter fixed  pin-t pin-x z-100 items-center   border-blue" ]
+    --         [
+    --             HTM.div [ HTMLAttr.class "px-4" ]
+    --                 [ HTM.text "asdfasdfasdfadsf" ]
+    --             , HTM.div [ HTMLAttr.class "px-4" ]
+    --                 [ HTM.text "asdfasdfasdfadsf" ]
+    --             , HTM.div [ HTMLAttr.class "px-4" ]
+    --                 [ HTM.text "asdfasdfasdfadsf" ]
+    --             , HTM.div [ HTMLAttr.class "px-4" ]
+    --                 [ HTM.text "asdfasdfasdfadsf" ]
+    --             , HTM.div [ HTMLAttr.class "px-4" ]
+    --                 [ HTM.text "asdfasdfasdfadsf" ]
+    --         ]
+    --     ,HTM.div[HTMLAttr.class "mt-16" ]
+    --     [
+    --          layout [hf] <|
+    --                row[hf][
+    --                     optionsPanel model
+    --                     , estimatePanel model ]
+    --     ]
+           
+    -- ]  
+        
 
 optionsPanel : RepairOrder -> Element Msg
 optionsPanel model =

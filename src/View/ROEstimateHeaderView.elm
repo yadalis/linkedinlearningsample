@@ -353,12 +353,12 @@ jobStepInfoView jobStep canShowVMRSCodes canShowParts =
                 if List.length jobStep.vmrsCodes > 0 && canShowVMRSCodes then
                     vmrsInfoView jobStep.vmrsCodes
                 else
-                    row[][]
+                    none
             , 
                 if List.length jobStep.parts > 0 && canShowParts then
                     partsInfoView jobStep.parts
                 else
-                    row[][]
+                    none
 
             -- ,row[width fill, paddingEach {edges | right = 75, top = 25, left = 5}
             --     ,Font.alignLeft, spaceEvenly
@@ -561,7 +561,7 @@ partsInfoView parts =
                                         , width = fill
                                         , view =
                                                 \person ->
-                                                    paragraph [paddingXY 0 15,Border.widthEach {edges | bottom = 0, right = 1}, height fill  ] [Element.text (String.fromInt person.count)]
+                                                    paragraph [paddingXY 0 15,fac ,Border.widthEach {edges | bottom = 0, right = 1}, height fill  ] [Element.text (String.fromInt person.count)]
                                     }
                                     , { header = 
                                         paragraph [Font.center, Background.color <| rgb255 214 214 214, Border.widthEach {edges | bottom = 1}, paddingXY 0 5, clipX  ][ Element.text "Code" ]
