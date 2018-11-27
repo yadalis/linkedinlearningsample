@@ -57,9 +57,20 @@ bc red green blue
 --Padding
 pde top right bottom left
     = paddingEach    {top = top, right = right, bottom = bottom, left = left}
+pdt number
+    = paddingEach    {edges | top = number}
+pdr number
+    = paddingEach    {edges | right = number}
+pdb number
+    = paddingEach    {edges | bottom = number}
+pdl number
+    = paddingEach    {edges | left = number}
 pd number
     = padding number
-
+pdx number
+    = paddingXY number 0
+pdy number
+    = paddingXY 0 number
 --Font Alignments
 fal 
     = Font.alignLeft

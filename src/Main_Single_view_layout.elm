@@ -11,6 +11,10 @@ import Html exposing (Html)
 import Task
 import Utils exposing (..)
 
+import View.ROEstimateHeaderView exposing (..)
+import View.ElmUIShotcuts exposing (..)
+
+
 -- type alias Model
 --     = {
 --         repairOrder : RepairOrder
@@ -79,49 +83,16 @@ main =
 
 view : RepairOrder -> Html Msg
 view  model =
-    layout [paddingXY 15 0, Background.color <| rgb255 0 0 0, Border.width 2, Border.color <| rgb255 66 134 244] <|
-            column [width fill, Background.color <| rgb255 150 150 150, Border.width 2, Border.color <| rgb255 212 47 47]
+--pd 15, Background.color <| rgb255 247 247 247, Border.width 10, Border.color <| rgb255 66 134 244
+    layout [pdx 25, wf, hf] <|
+            column [width fill,hf, pd 15, Border.width 0, Border.color <| rgb255 212 47 47]
                 [ 
-                    homeHeaderPanel ,
-                    middlePanel
-                    --leftNavigationPanel,
-                    --rightContentPanel,
-                    --footerPanel
+                    row[pd 25, hf,  spx 25, alignRight, bw 2, wf, clipX][text "ddddddddddddddd", text "ddddddddddddddd", text "ddddddddddddddd", text "ddddddddddddddd", text "ddddddddddddddd"]
+                    ,middlePanel
                 ]
-
-middlePanel =
-            row[Border.width 2, Border.color <| rgb255 47 46 49, width fill, spaceEvenly]
-            [
-                column[ width <| fillPortion 2, Border.width 2]
-                [              
-                    text "asdf"
-                    ,text "asdf"
-                    ,text "asdf"
-                    ,text "asdf"
-                    ,text "asdf"
-                    ,text "asdf"
-                    ,text "asdf"
-                    ,text "asdf"
-                    ,text "asdf"
-                    ,text "asdf"
-                    ,text "asdf"
-                    ,text "asdf"
-                    ,text "asdf"
-                    ,text "asdf"
-                    ,text "asdf"
-                    ,text "asdf"
-                    ,text "asdf"
-                    ,text "asdf"
-                ]
-                ,
-                column[width <| fillPortion 5, Border.width 2]
-                [              
-                    text "asdf"
-                ]
-            ]
 
 homeHeaderPanel =
-    row[Border.width 2, Border.color <| rgb255 244 66 203, width fill, spaceEvenly]
+    row[Border.width 2, width fill, spaceEvenly]
     [
         column[ width fill, Border.width 2]
         [
@@ -159,3 +130,68 @@ homeHeaderPanel =
             ]
         ]
     ]
+
+
+    
+middlePanel =
+            -- column[Border.width 0, width fill, spaceEvenly]
+            -- [
+                column[ wf, hf, Border.width 4, scrollbarY]
+                [              
+                    text "11111111111111"
+                    ,text "asdf"
+                    ,text "asdf"
+                    ,text "asdf"
+                    ,text "asdf"
+                    ,text "asdf"
+                    ,text "asdf"
+                    ,text "asdf"
+                    ,text "asdf"
+                    ,text "asdf"
+                    ,text "asdf"
+                    ,text "asdf"
+                    ,text "asdf"
+                    ,text "asdf"
+                    ,text "asdf"
+                    ,text "asdf"
+                    ,text "asdf"
+                    ,text "asdf"
+                                        ,text "asdf"
+                    ,text "asdf"
+                    ,text "asdf"
+                    ,text "asdf"
+                    ,text "asdf"
+                    ,text "asdf"
+                    ,text "asdf"
+                    ,text "asdf"
+                    ,text "asdf"
+                    ,text "asdf"
+                    ,text "asdf"
+                    ,text "asdf"
+                    ,text "asdf"
+                    ,text "asdf"
+                    ,text "asdf"
+                    ,text "asdf"
+                                        ,text "asdf"
+                    ,text "asdf"
+                    ,text "asdf"
+                    ,text "asdf"
+                    ,text "asdf"
+                    ,text "asdf"
+                    ,text "asdf"
+                    ,text "asdf"
+                    ,text "asdf"
+                    ,text "asdf"
+                    ,text "asdf"
+                    ,text "asdf"
+                    ,text "asdf"
+                    ,text "asdf"
+                    ,text "asdf"
+                    ,text "222222222222222"
+                ]
+                -- ,
+                -- column[width <| fillPortion 5, Border.width 2]
+                -- [              
+                --     text "asdf"
+                -- ]
+            --]
