@@ -189,14 +189,15 @@ optionsPanel model =
         , pd 10
         , bc 225 225 225
         , spy 5
-
+      
         ]
         [
             row[bwe 0 0 2 0, wf, pde 25 0 0 0]
             [paragraph [fac, pde 5 0 5 0] [text "Estimate generation options"] ]
             
-            
-                    ,row[bwe 0 0 1 0, wf, pde 15 0 0 0]
+            , column[ wf, hf, scrollbarY]
+                [
+                    row[bwe 0 0 1 0, wf, pde 15 0 0 0]
                     [paragraph [fal, pde 0 0 3 0] [text "Jobsteps"] ]
                 
                     ,column[spy 5, alignRight]
@@ -208,10 +209,7 @@ optionsPanel model =
 
                     ,extraOPtions      
 
-                    ,row[bwe 0 0 1 0, wf, pde 15 0 0 0]
-                    [paragraph [fal, pde 0 0 3 0 ] [text "Scrollable Data"] ]
-
-                    ,column[wf,hf,  scrollbarY][
+                    ,column[wf, hf][
                         text "11111111111111"
                             
                             ,text "asdf"
@@ -241,10 +239,10 @@ optionsPanel model =
                             ,text "asdf"
                             ,text "asdf"
                             
-                            -- ,text "asdf"
+                            ,text "asdf"
                             ,text "222222222222222222"
                     ]
-            
+            ]
  
         
             
