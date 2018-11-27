@@ -14,6 +14,9 @@ type Msg
     | ShowVMRSCodes Bool
     | ShowParts Bool
     | ShowJobStep Bool Int
+    | SetComment String
+    | PrintEstimate
+    | ShowLaborRate Bool
     
 type alias JobStep =
     {   

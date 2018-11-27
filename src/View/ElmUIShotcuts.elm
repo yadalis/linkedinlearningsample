@@ -43,6 +43,22 @@ bw number
     = Border.width number
 bwe top right bottom left
     = Border.widthEach    {top = top, right = right, bottom = bottom, left = left}
+
+bwx number
+    = Border.widthXY number 0
+bwy number
+    = Border.widthXY 0 number
+
+bwt number
+    = Border.widthEach    {edges | top = number}
+bwr number
+    = Border.widthEach    {edges | right = number}
+bwb number
+    = Border.widthEach    {edges | bottom = number}
+bwl number
+    = Border.widthEach    {edges | left = number}
+
+
 brc red green blue 
     = Border.color <| rgb255 red green blue
 br number
@@ -55,8 +71,16 @@ bc red green blue
     = Background.color <| rgb255 red green blue
 
 --Padding
+pd number
+    = padding number
 pde top right bottom left
     = paddingEach    {top = top, right = right, bottom = bottom, left = left}
+
+pdx number
+    = paddingXY number 0
+pdy number
+    = paddingXY 0 number
+
 pdt number
     = paddingEach    {edges | top = number}
 pdr number
@@ -65,12 +89,8 @@ pdb number
     = paddingEach    {edges | bottom = number}
 pdl number
     = paddingEach    {edges | left = number}
-pd number
-    = padding number
-pdx number
-    = paddingXY number 0
-pdy number
-    = paddingXY 0 number
+
+
 --Font Alignments
 fal 
     = Font.alignLeft

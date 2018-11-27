@@ -38,7 +38,9 @@ type alias RepairOrder =
         , jobSteps : Array JobStep
         , showVMRSCodes : Bool
         , showParts : Bool
+        , showLaborRate : Bool
         , selectedChoise : String
+        , userComment : String
     }
 
 init : () -> (RepairOrder, Cmd Msg)
@@ -86,11 +88,73 @@ init _=
                             , VMRS "219-031-011-015-132" "Brakes and Cluth combo " 16.5]
                              [Part 1 "P1asdfasdfasdfasdf34343434343asdgsadgsdgf asdfasdfasdf asdfasdfasdfasdfasfasdf asdfasfasfasdfasdf asdfas" "OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES OIL COOLER HOUSING GASKET AND AIR", Part 2 "Brakes and Cluth combo" "OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES" , Part 5 "P3asd" "Part 3"]
                             False
+                    --                     ,JobStep 4 "PICK UP AND DELIVER" "PICK UP AND DELIVER"
+                    --          [VMRS "119-03-01-05-132" "Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo" 12.5
+                    --         , VMRS "119-031-011-015-132" "Brakes and Cluth combo " 14.0
+                    --         , VMRS "219-031-011-015-132" "Brakes and Cluth combo " 16.5]
+                    --          [Part 1 "P1asdfasdfasdfasdf34343434343asdgsadgsdgf asdfasdfasdf asdfasdfasdfasdfasfasdf asdfasfasfasdfasdf asdfas" "OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES OIL COOLER HOUSING GASKET AND AIR", Part 2 "Brakes and Cluth combo" "OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES" , Part 5 "P3asd" "Part 3"]
+                    --         False
+                    --                             ,JobStep 2 "POWER STEERING PUMP AND STEERING GEAR BOX LEAKING." "POWER STEERING PUMP AND STEERING GEAR BOX LEAKING."
+                    --          [VMRS "119-03-01-05-132" "Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo" 12.5
+                    --         , VMRS "119-031-011-015-132" "Brakes and Cluth combo " 14.0
+                    --         , VMRS "219-031-011-015-132" "Brakes and Cluth combo " 16.5]
+                    --          [Part 1 "P1asdfasdfasdfasdf34343434343asdgsadgsdgf asdfasdfasdf asdfasdfasdfasdfasfasdf asdfasfasfasdfasdf asdfas" "OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES OIL COOLER HOUSING GASKET AND AIR", Part 2 "Brakes and Cluth combo" "OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES" , Part 5 "P3asd" "Part 3"]
+                    --         True
+                    -- ,JobStep 3 "PICK UP AND DELIVER" "PICK UP AND DELIVER"
+                    --          [VMRS "119-03-01-05-132" "Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo" 12.5
+                    --         , VMRS "119-031-011-015-132" "Brakes and Cluth combo " 14.0
+                    --         , VMRS "219-031-011-015-132" "Brakes and Cluth combo " 16.5]
+                    --          [Part 1 "P1asdfasdfasdfasdf34343434343asdgsadgsdgf asdfasdfasdf asdfasdfasdfasdfasfasdf asdfasfasfasdfasdf asdfas" "OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES OIL COOLER HOUSING GASKET AND AIR", Part 2 "Brakes and Cluth combo" "OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES" , Part 5 "P3asd" "Part 3"]
+                    --         False
+                    --                     ,JobStep 4 "PICK UP AND DELIVER" "PICK UP AND DELIVER"
+                    --          [VMRS "119-03-01-05-132" "Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo" 12.5
+                    --         , VMRS "119-031-011-015-132" "Brakes and Cluth combo " 14.0
+                    --         , VMRS "219-031-011-015-132" "Brakes and Cluth combo " 16.5]
+                    --          [Part 1 "P1asdfasdfasdfasdf34343434343asdgsadgsdgf asdfasdfasdf asdfasdfasdfasdfasfasdf asdfasfasfasdfasdf asdfas" "OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES OIL COOLER HOUSING GASKET AND AIR", Part 2 "Brakes and Cluth combo" "OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES" , Part 5 "P3asd" "Part 3"]
+                    --         False
+                    --                             ,JobStep 2 "POWER STEERING PUMP AND STEERING GEAR BOX LEAKING." "POWER STEERING PUMP AND STEERING GEAR BOX LEAKING."
+                    --          [VMRS "119-03-01-05-132" "Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo" 12.5
+                    --         , VMRS "119-031-011-015-132" "Brakes and Cluth combo " 14.0
+                    --         , VMRS "219-031-011-015-132" "Brakes and Cluth combo " 16.5]
+                    --          [Part 1 "P1asdfasdfasdfasdf34343434343asdgsadgsdgf asdfasdfasdf asdfasdfasdfasdfasfasdf asdfasfasfasdfasdf asdfas" "OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES OIL COOLER HOUSING GASKET AND AIR", Part 2 "Brakes and Cluth combo" "OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES" , Part 5 "P3asd" "Part 3"]
+                    --         True
+                    -- ,JobStep 3 "PICK UP AND DELIVER" "PICK UP AND DELIVER"
+                    --          [VMRS "119-03-01-05-132" "Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo" 12.5
+                    --         , VMRS "119-031-011-015-132" "Brakes and Cluth combo " 14.0
+                    --         , VMRS "219-031-011-015-132" "Brakes and Cluth combo " 16.5]
+                    --          [Part 1 "P1asdfasdfasdfasdf34343434343asdgsadgsdgf asdfasdfasdf asdfasdfasdfasdfasfasdf asdfasfasfasdfasdf asdfas" "OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES OIL COOLER HOUSING GASKET AND AIR", Part 2 "Brakes and Cluth combo" "OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES" , Part 5 "P3asd" "Part 3"]
+                    --         False
+                    --                     ,JobStep 4 "PICK UP AND DELIVER" "PICK UP AND DELIVER"
+                    --          [VMRS "119-03-01-05-132" "Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo" 12.5
+                    --         , VMRS "119-031-011-015-132" "Brakes and Cluth combo " 14.0
+                    --         , VMRS "219-031-011-015-132" "Brakes and Cluth combo " 16.5]
+                    --          [Part 1 "P1asdfasdfasdfasdf34343434343asdgsadgsdgf asdfasdfasdf asdfasdfasdfasdfasfasdf asdfasfasfasdfasdf asdfas" "OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES OIL COOLER HOUSING GASKET AND AIR", Part 2 "Brakes and Cluth combo" "OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES" , Part 5 "P3asd" "Part 3"]
+                    --         False
+                    --                             ,JobStep 2 "POWER STEERING PUMP AND STEERING GEAR BOX LEAKING." "POWER STEERING PUMP AND STEERING GEAR BOX LEAKING."
+                    --          [VMRS "119-03-01-05-132" "Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo" 12.5
+                    --         , VMRS "119-031-011-015-132" "Brakes and Cluth combo " 14.0
+                    --         , VMRS "219-031-011-015-132" "Brakes and Cluth combo " 16.5]
+                    --          [Part 1 "P1asdfasdfasdfasdf34343434343asdgsadgsdgf asdfasdfasdf asdfasdfasdfasdfasfasdf asdfasfasfasdfasdf asdfas" "OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES OIL COOLER HOUSING GASKET AND AIR", Part 2 "Brakes and Cluth combo" "OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES" , Part 5 "P3asd" "Part 3"]
+                    --         True
+                    -- ,JobStep 3 "PICK UP AND DELIVER" "PICK UP AND DELIVER"
+                    --          [VMRS "119-03-01-05-132" "Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo" 12.5
+                    --         , VMRS "119-031-011-015-132" "Brakes and Cluth combo " 14.0
+                    --         , VMRS "219-031-011-015-132" "Brakes and Cluth combo " 16.5]
+                    --          [Part 1 "P1asdfasdfasdfasdf34343434343asdgsadgsdgf asdfasdfasdf asdfasdfasdfasdfasfasdf asdfasfasfasdfasdf asdfas" "OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES OIL COOLER HOUSING GASKET AND AIR", Part 2 "Brakes and Cluth combo" "OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES" , Part 5 "P3asd" "Part 3"]
+                    --         False
+                    --                     ,JobStep 14 "PICK UP AND DELIVER" "PICK UP AND DELIVER"
+                    --          [VMRS "119-03-01-05-132" "Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo Brakes and Cluth combo" 12.5
+                    --         , VMRS "119-031-011-015-132" "Brakes and Cluth combo " 14.0
+                    --         , VMRS "219-031-011-015-132" "Brakes and Cluth combo " 16.5]
+                    --          [Part 1 "P1asdfasdfasdfasdf34343434343asdgsadgsdgf asdfasdfasdf asdfasdfasdfasdfasfasdf asdfasfasfasdfasdf asdfas" "OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES OIL COOLER HOUSING GASKET AND AIR", Part 2 "Brakes and Cluth combo" "OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES OIL COOLER HOUSING GASKET AND AIR COMPRESSOR COOLANT LINES" , Part 5 "P3asd" "Part 3"]
+                    --         False
                 ]
             )
             , showVMRSCodes = False
             , showParts = False
+            , showLaborRate = True
             , selectedChoise = "Tryo"
+            , userComment = ""
          },Cmd.none)
 
 
@@ -103,8 +167,14 @@ update msg model =
         ShowParts canShowParts ->
             ( {model | showParts = canShowParts}, Cmd.none)
         
+        ShowLaborRate canLaborRate ->
+            ( {model | showLaborRate = canLaborRate}, Cmd.none)
+        
         RB str ->
             ( {model | selectedChoise = str}, Cmd.none)
+        
+        SetComment str ->
+            ( {model | userComment = str}, Cmd.none)
 
         ShowJobStep canShowJobStep index ->
             ( -- First style
@@ -117,6 +187,9 @@ update msg model =
             , Cmd.none)
 
         VMRSContentIsRequired  ->
+           ( model, Cmd.none)
+        
+        PrintEstimate  ->
            ( model, Cmd.none)
             
 main: Program () RepairOrder Msg
@@ -159,26 +232,46 @@ optionsPanel : RepairOrder -> Element Msg
 optionsPanel model =
     let
         --ele = if (Array.length model.jobSteps) == Array.length (Array.filter (\js -> js.isPresentable == True) model.jobSteps ) then
-        extraOPtions = if Array.length (Array.filter (\js -> js.isPresentable == True) model.jobSteps ) > 0 then
-                    column[spy 5, alignRight]
-                    [
-                        Input.checkbox [bw 0 ] {
-                            onChange = ShowVMRSCodes
-                            ,icon = 
-                                    --buildChkBoxImage -- True/False gets passed to the flag parameter in buildChkBoxImage function automatically, if u need to pass
-                                                        -- more than 1 parameter, then you need to do the below code
-                                    (\b ->
-                                        buildChkBoxImage b)
-                            , label = Input.labelLeft [alignRight] (el [] <| text (if model.showVMRSCodes then "Hide VMRS Codes" else "Show VMRS Codes"))
-                            --, label = Input.labelLeft [alignRight] (el [] <| none)
-                            , checked = model.showVMRSCodes
-                        }
-                        ,Input.checkbox [bw 0 ]{
-                            onChange = ShowParts
-                            ,icon = buildChkBoxImage
-                            , label = Input.labelLeft [alignRight] (el [] <| text (if model.showParts then "Hide Parts" else "Show Parts"))
-                            , checked = model.showParts
-                        }
+        canShowExtraOptions = Array.length (Array.filter (\js -> js.isPresentable == True) model.jobSteps )
+        extraOPtions = 
+                if canShowExtraOptions > 0 then
+                    column[wf][
+                                row[bwb 1, wf, pdt 15]
+                                            [paragraph [fal, pdb 3 ] [text "Extra info"] ]
+                                ,column[spy 5, alignRight, pdt 5]
+                                [
+                                    Input.checkbox [bw 0 ] {
+                                        onChange = ShowVMRSCodes
+                                        ,icon = 
+                                                --buildChkBoxImage -- True/False gets passed to the flag parameter in buildChkBoxImage function automatically, if u need to pass
+                                                                    -- more than 1 parameter, then you need to do the below code
+                                                (\b ->
+                                                    buildChkBoxImage b)
+                                        , label = Input.labelLeft [alignRight] (el [] <| text (if model.showVMRSCodes then "Hide VMRS Codes" else "Show VMRS Codes"))
+                                        --, label = Input.labelLeft [alignRight] (el [] <| none)
+                                        , checked = model.showVMRSCodes
+                                    }
+                                    ,Input.checkbox [bw 0 ]{
+                                        onChange = ShowParts
+                                        ,icon = buildChkBoxImage
+                                        , label = Input.labelLeft [alignRight] (el [] <| text (if model.showParts then "Hide Parts" else "Show Parts"))
+                                        , checked = model.showParts
+                                    }
+                                      ,Input.checkbox [bw 0 ]{
+                                        onChange = ShowLaborRate
+                                        ,icon = buildChkBoxImage
+                                        , label = Input.labelLeft [alignRight] (el [] <| text (if model.showLaborRate then "Hide Labor Rate" else "Show Labor Rate"))
+                                        , checked = model.showLaborRate
+                                    }
+                                    --                 ,text "asdf"
+                                    -- ,text "asdf"
+                                    -- ,text "asdf"
+                                    -- ,text "asdf"
+                                    -- ,text "asdf"
+                                    -- ,text "asdf"
+                                    -- ,text "asdf"
+                                    -- ,text "asdf"
+                                ]
                     ]
                 else
                     none
@@ -196,54 +289,83 @@ optionsPanel model =
             [paragraph [fac, pde 5 0 5 0] [text "Estimate generation options"] ]
             
             
-                    ,row[bwe 0 0 1 0, wf, pde 15 0 0 0]
-                    [paragraph [fal, pde 0 0 3 0] [text "Jobsteps"] ]
+                ,column[wf][
+                    row[bwe 0 0 1 0, wf, pde 15 0 0 0]
+                        [paragraph [fal, pde 0 0 3 0] [text "Jobsteps"] ]
                 
-                    ,column[spy 5, alignRight]
+                    ,column[spy 5, alignRight, scrollbarY, pdt 5,   height
+                                                                            (fill
+                                                                                --|> minimum 0
+                                                                                |> maximum 175
+                                                                            )
+                            ]
                         (List.indexedMap jobStepOptions (Array.toList model.jobSteps) )
+                ]
+                    -- ,if canShowExtraOptions > 0 then
+                    --          row[bwe 0 0 1 0, wf, pde 15 0 0 0]
+                    --             [paragraph [fal, pde 0 0 3 0 ] [text "Extra info"] ]
+                    -- else
+                    --     none
+                       
+                    ,extraOPtions 
 
                     ,row[bwe 0 0 1 0, wf, pde 15 0 0 0]
-                    [paragraph [fal, pde 0 0 3 0 ] [text "Extra info"] ]
-
-
-                    ,extraOPtions      
-
-                    ,row[bwe 0 0 1 0, wf, pde 15 0 0 0]
-                    [paragraph [fal, pde 0 0 3 0 ] [text "Scrollable Data"] ]
-
-                    ,column[wf,hf,  scrollbarY][
-                        text "11111111111111"
-                            
-                            ,text "asdf"
-                            ,text "asdf"
-                            ,text "asdf"
-                            ,text "asdf"
-                            ,text "asdf"
-                            ,text "asdf"
-                            ,text "asdf"
-                            ,text "asdf"
-                            
-                            ,text "asdf"
-                            ,text "asdf"
-                            ,text "asdf"
-                            ,text "asdf"
-                            ,text "asdf"
-                            ,text "asdf"
-                            ,text "asdf"
-                            ,text "asdf"
-                            ,text "asdf"
-                            ,text "asdf"
-                            ,text "asdf"
-                            ,text "asdf"
-                            ,text "asdf"
-                            
-                            ,text "asdf"
-                            ,text "asdf"
-                            ,text "asdf"
-                            
-                            -- ,text "asdf"
-                            ,text "222222222222222222"
+                    [paragraph [fal, pde 0 0 3 0 ] [text "Comment"] ]
+                    ,row[wf, hf, pdt 5][
+                        Input.multiline [bw 5, hf]{
+                            onChange = SetComment
+                            ,text = model.userComment
+                            , label = Input.labelLeft [alignRight] (none)
+                             , placeholder = Just (Input.placeholder [] (el [] <| text "Please enter comments..."))
+                            , spellcheck = True
+                        }
                     ]
+
+                    ,row[ wf, pdt 15]
+                        [
+                            Input.button [wf, pdy 5, bw 2, bc 226 63 63, Font.color <| rgb255 250 250 250]
+                                { onPress = Just PrintEstimate
+                                , label = text "Print Estimate"
+                                }
+                        ]
+                    
+                   
+                    -- ,row[bwe 0 0 1 0, wf, pde 15 0 0 0]
+                    -- [paragraph [fal, pde 0 0 3 0 ] [text "Scrollable Data"] ]
+
+                    -- ,column[wf,hf,  scrollbarY][
+                    --     text "11111111111111"
+                            
+                    --         ,text "asdf"
+                    --         ,text "asdf"
+                    --         ,text "asdf"
+                    --         ,text "asdf"
+                    --         ,text "asdf"
+                    --         ,text "asdf"
+                    --         ,text "asdf"
+                    --         ,text "asdf"
+                            
+                    --         ,text "asdf"
+                    --         ,text "asdf"
+                    --         ,text "asdf"
+                    --         ,text "asdf"
+                    --         ,text "asdf"
+                    --         ,text "asdf"
+                    --         ,text "asdf"
+                    --         ,text "asdf"
+                    --         ,text "asdf"
+                    --         ,text "asdf"
+                    --         ,text "asdf"
+                    --         ,text "asdf"
+                    --         ,text "asdf"
+                            
+                    --         ,text "asdf"
+                    --         ,text "asdf"
+                    --         ,text "asdf"
+                            
+                    --         -- ,text "asdf"
+                    --         ,text "222222222222222222"
+                    -- ]
             
  
         
