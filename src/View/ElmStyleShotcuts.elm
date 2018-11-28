@@ -1,12 +1,10 @@
-module View.ElmUIShotcuts exposing (..)
+module View.ElmStyleShotcuts exposing (..)
 
 import Element exposing (..)
 import Element.Background as Background
 import Element.Border as Border
-import Element.Events exposing (..)
 import Element.Font as Font
-import Element.Input as Input
- 
+
 edges =
     { top = 0
     , right = 0
@@ -21,6 +19,19 @@ hfp number =
     height <| fillPortion number
 hpx number
     = height <| px number
+hfmin minValue
+   = height (fill
+        |> minimum minValue
+    )
+hfmax maxValue
+   = height (fill
+        |> maximum maxValue
+    )
+hfRange minValue maxValue
+   = height (fill
+        |> minimum minValue
+        |> maximum maxValue
+    )
 
 --Width
 wf = 

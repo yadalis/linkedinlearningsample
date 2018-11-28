@@ -2,19 +2,16 @@ module Main exposing (..)
 
 import Browser
 import Element exposing (..)
-import Element.Background as Background
-import Element.Border as Border
-import Element.Events exposing (..)
-import Element.Font as Font
 import Element.Input as Input
-import Html  as HTM
-import Html.Attributes as HTMLAttr
+import Html exposing (..)
+import Html.Attributes exposing (..)
 import Task
-import Utils exposing (..)
+import Model exposing (..)
 import Array exposing (Array)
 
 import View.ROEstimateHeaderView exposing (..)
-import View.ElmUIShotcuts exposing (..)
+import View.ElmStyleShotcuts as ElmStyleShotcuts exposing (..)
+import View.ElmUIHelpers exposing (..)
 
 type alias RepairOrder =
     { 
@@ -196,7 +193,7 @@ main: Program () RepairOrder Msg
 main = 
      Browser.element { init = init, update = update, view = view, subscriptions = always Sub.none }
 
-view : RepairOrder -> HTM.Html Msg
+view : RepairOrder -> Html Msg
 view  model =
     layout [hf] <|
                    row[hf][
@@ -229,17 +226,22 @@ view  model =
 
 --= Array.length (Array.filter (\js -> js.isPresentable == True) model.jobSteps )
 
-presentableJobStepsCount : Array JobStep -> Int
-presentableJobStepsCount jsList
+selectedJobSteps : Array JobStep -> Array JobStep
+selectedJobSteps jsList
                 = jsList
                     |> Array.filter (\jobStep -> jobStep.isPresentable)
+
+selectedJobStepsCount : Array JobStep -> Int
+selectedJobStepsCount jsList
+                = jsList
+                    |> selectedJobSteps
                     |> Array.length
 
-isAllJobStepsChecked : Array JobStep -> Bool
-isAllJobStepsChecked jsList
+isAllJobStepsSelected : Array JobStep -> Bool
+isAllJobStepsSelected jsList
                 = jsList
-                    |> presentableJobStepsCount
-                    |> \isPresentableJobStepCount -> if isPresentableJobStepCount == Array.length jsList then
+                    |> selectedJobStepsCount
+                    |> \count -> if count == Array.length jsList then
                                                          True
                                                       else 
                                                         False
@@ -247,8 +249,8 @@ isAllJobStepsChecked jsList
 isAtleastOneJobStepsChecked : Array JobStep -> Bool
 isAtleastOneJobStepsChecked jsList
                 = jsList
-                    |> presentableJobStepsCount
-                    |> \isPresentableJobStepCount -> isPresentableJobStepCount > 0
+                    |> selectedJobStepsCount
+                    |> \count -> count > 0
 
 optionsPanel : RepairOrder -> Element Msg
 optionsPanel model =
@@ -256,7 +258,7 @@ optionsPanel model =
         --ele = if (Array.length model.jobSteps) == Array.length (Array.filter (\js -> js.isPresentable == True) model.jobSteps ) then
         --canShowExtraOptions = Array.length (Array.filter (\jobStep -> jobStep.isPresentable) model.jobSteps )
 
-        canEnablePrintEstimateBtn = isAllJobStepsChecked model.jobSteps
+        canEnablePrintEstimateBtn = isAllJobStepsSelected model.jobSteps
 
         -- enabledPrintEstimateBtnStyle = [ bc 226 63 63, Font.color <| rgb255 250 250 250]
 
@@ -275,7 +277,7 @@ optionsPanel model =
                 if canShowExtraOptions then
                     column[wf][
                                 row[bwb 1, wf, pdt 15]
-                                            [paragraph [fal, pdb 3 ] [text "Extra info"] ]
+                                            [paragraph [fal, pdb 3 ] [textValue "Extra info"] ]
                                 ,column[spy 5, alignRight, pdt 5]
                                 [
                                     Input.checkbox [bw 0 ] {
@@ -285,20 +287,20 @@ optionsPanel model =
                                                                     -- more than 1 parameter, then you need to do the below code
                                                 (\b ->
                                                     buildChkBoxImage b)
-                                        , label = Input.labelLeft [alignRight] (el [] <| text (if model.showVMRSCodes then "Hide VMRS Codes" else "Show VMRS Codes"))
+                                        , label = Input.labelLeft [alignRight] (el [] <| textValue (if model.showVMRSCodes then "Hide VMRS Codes" else "Show VMRS Codes"))
                                         --, label = Input.labelLeft [alignRight] (el [] <| none)
                                         , checked = model.showVMRSCodes
                                     }
                                     ,Input.checkbox [bw 0 ]{
                                         onChange = ShowParts
                                         ,icon = buildChkBoxImage
-                                        , label = Input.labelLeft [alignRight] (el [] <| text (if model.showParts then "Hide Parts" else "Show Parts"))
+                                        , label = Input.labelLeft [alignRight] (el [] <| textValue (if model.showParts then "Hide Parts" else "Show Parts"))
                                         , checked = model.showParts
                                     }
                                       ,Input.checkbox [bw 0 ]{
                                         onChange = ShowLaborRate
                                         ,icon = buildChkBoxImage
-                                        , label = Input.labelLeft [alignRight] (el [] <| text (if model.showLaborRate then "Hide Labor Rate" else "Show Labor Rate"))
+                                        , label = Input.labelLeft [alignRight] (el [] <| textValue (if model.showLaborRate then "Hide Labor Rate" else "Show Labor Rate"))
                                         , checked = model.showLaborRate
                                     }
                                     --                 ,text "asdf"
@@ -324,18 +326,19 @@ optionsPanel model =
         ]
         [
             row[bwe 0 0 2 0, wf, pde 25 0 0 0]
-            [paragraph [fac, pde 5 0 5 0] [text "Estimate generation options"] ]
+            [paragraph [fac, pde 5 0 5 0] [textValue "Estimate generation options"] ]
             
             
                 ,column[wf][
                     row[bwe 0 0 1 0, wf, pde 15 0 0 0]
-                        [paragraph [fal, pde 0 0 3 0] [text "Jobsteps"] ]
+                        [paragraph [fal, pde 0 0 3 0] [textValue "Jobsteps"] ]
                 
-                    ,column[spy 5, alignRight, scrollbarY, pdt 5,   height
-                                                                            (fill
-                                                                                --|> minimum 0
-                                                                                |> maximum 175
-                                                                            )
+                    ,column[spy 5, alignRight, scrollbarY, pdt 5,  hfmax 175
+                                                                        --  Elm.height
+                                                                        --     (fill
+                                                                        --         --|> minimum 0
+                                                                        --         |> maximum 175
+                                                                        --     )
                             ]
                         (List.indexedMap jobStepOptions (Array.toList model.jobSteps) )
                 ]
@@ -348,13 +351,13 @@ optionsPanel model =
                     ,extraOPtions 
 
                     ,row[bwe 0 0 1 0, wf, pde 15 0 0 0]
-                    [paragraph [fal, pde 0 0 3 0 ] [text "Comment"] ]
+                    [paragraph [fal, pde 0 0 3 0 ] [textValue "Comment"] ]
                     ,row[wf, hf, pdt 5][
                         Input.multiline [bw 5, hf]{
                             onChange = SetComment
                             ,text = model.userComment
                             , label = Input.labelLeft [alignRight] (none)
-                             , placeholder = Just (Input.placeholder [] (el [] <| text "Please enter comments..."))
+                             , placeholder = Just (Input.placeholder [] (el [] <| textValue "Please enter comments..."))
                             , spellcheck = True
                         }
                     ]
@@ -363,7 +366,7 @@ optionsPanel model =
                         [
                             Input.button ( [wf, pdy 5, bw 2] ++ printEstimateBtnStyle)
                                 { onPress = if canEnablePrintEstimateBtn then Just PrintEstimate else Nothing
-                                , label =  text <| String.toUpper "Print Estimate"
+                                , label =  textValue <| String.toUpper "Print Estimate"
                                 }
                         ]
                     
@@ -413,13 +416,13 @@ optionsPanel model =
 estimatePanel : RepairOrder -> Element Msg
 estimatePanel model =
         let
-            jobStepsToShow =    List.filter (\js -> js.isPresentable)  (Array.toList model.jobSteps)
+            jobStepsToShow =  Array.toList (selectedJobSteps model.jobSteps ) -- List.filter (\js -> js.isPresentable)  (Array.toList model.jobSteps)
         in
             column [hf,  wfp 4,  pd 10, bwe 0 0 0 1]
             [
                 row[wf]
                     [roEstimateHeaderView model.repairOrderNumber]
-                ,column[scrollbarY ]
+                ,column[scrollbarY, eId "myRowX" ]
                 [
                     roInfoView model.repairOrderNumber model.branchNumber model.branchDepartmentNumber model.branchPhoneNumber
                     ,customerInfoView model.customerName model.customerAddressLine1 model.customerAddressLine2 model.customerPhoneNumber
@@ -436,7 +439,7 @@ jobStepOptions index jobStep =
             Input.checkbox [bw 0 ] {
                 onChange = (\bool -> ShowJobStep bool index)
                 ,icon = buildChkBoxImage
-                , label = Input.labelLeft [alignRight] (el [] <| text (if jobStep.isPresentable then "Hide JobStep# " ++ String.fromInt jobStep.number else "Show JobStep# " ++ String.fromInt jobStep.number))
+                , label = Input.labelLeft [alignRight] (el [] <| textValue (if jobStep.isPresentable then "Hide JobStep# " ++ String.fromInt jobStep.number else "Show JobStep# " ++ String.fromInt jobStep.number))
                 , checked = jobStep.isPresentable
             }
 
@@ -449,7 +452,7 @@ buildChkBoxImage falg =
         if falg == True then 
             image [hpx 24] {src = "checked.png", description ="Logo" }
         else 
-            el [hpx 24, wpx 24, bw 2, br 5] <| none
+            el [hpx 24, wpx 24, bw 2, ElmStyleShotcuts.br 5] <| none
            
 -- this is just to send a message back in to update function when there are no side-effects needed and just a way to put the message back in to update function
 sendMessage : msg -> Cmd msg
