@@ -226,15 +226,50 @@ view  model =
     --     ]
            
     -- ]  
-        
+
+--= Array.length (Array.filter (\js -> js.isPresentable == True) model.jobSteps )
+
+presentableJobStepsCount : Array JobStep -> Int
+presentableJobStepsCount jsList
+                = jsList
+                    |> Array.filter (\jobStep -> jobStep.isPresentable)
+                    |> Array.length
+
+isAllJobStepsChecked : Array JobStep -> Bool
+isAllJobStepsChecked jsList
+                = jsList
+                    |> presentableJobStepsCount
+                    |> \isPresentableJobStepCount -> if isPresentableJobStepCount == Array.length jsList then
+                                                         True
+                                                      else 
+                                                        False
+
+isAtleastOneJobStepsChecked : Array JobStep -> Bool
+isAtleastOneJobStepsChecked jsList
+                = jsList
+                    |> presentableJobStepsCount
+                    |> \isPresentableJobStepCount -> isPresentableJobStepCount > 0
 
 optionsPanel : RepairOrder -> Element Msg
 optionsPanel model =
     let
         --ele = if (Array.length model.jobSteps) == Array.length (Array.filter (\js -> js.isPresentable == True) model.jobSteps ) then
-        canShowExtraOptions = Array.length (Array.filter (\js -> js.isPresentable == True) model.jobSteps )
+        --canShowExtraOptions = Array.length (Array.filter (\jobStep -> jobStep.isPresentable) model.jobSteps )
+
+        canEnablePrintEstimateBtn = isAllJobStepsChecked model.jobSteps
+
+        enabledPrintEstimateBtnStyle = [ bc 226 63 63, Font.color <| rgb255 250 250 250]
+
+        disabledPrintEstimateBtnStyle = [ bc 198 201 206, Font.color <| rgb255 245 245 245]
+
+        printEstimateBtnStyle = if canEnablePrintEstimateBtn then enabledPrintEstimateBtnStyle else disabledPrintEstimateBtnStyle
+
+        canShowExtraOptions =
+                model.jobSteps
+                    |> isAtleastOneJobStepsChecked
+
         extraOPtions = 
-                if canShowExtraOptions > 0 then
+                if canShowExtraOptions then
                     column[wf][
                                 row[bwb 1, wf, pdt 15]
                                             [paragraph [fal, pdb 3 ] [text "Extra info"] ]
@@ -323,9 +358,9 @@ optionsPanel model =
 
                     ,row[ wf, pdt 15]
                         [
-                            Input.button [wf, pdy 5, bw 2, bc 226 63 63, Font.color <| rgb255 250 250 250]
-                                { onPress = Just PrintEstimate
-                                , label = text "Print Estimate"
+                            Input.button ( [wf, pdy 5, bw 2] ++ printEstimateBtnStyle)
+                                { onPress = if canEnablePrintEstimateBtn then Just PrintEstimate else Nothing
+                                , label =  text <| String.toUpper "Print Estimate"
                                 }
                         ]
                     

@@ -500,7 +500,7 @@ vmrsInfoView vmrsCodes =
             ,column[width <| fillPortion 4 ]
                 [
                     row[][
-                        Element.table [paddingXY 0 0]
+                        Element.table [paddingXY 0 0, Background.color (rgb255 235 235 235)]
                         { data = vmrsCodes
                         , columns =
                             [ 
@@ -541,7 +541,7 @@ partsInfoView parts =
                 ,column[width <| fillPortion 4 ]
                     [
                         row[][
-                            Element.table [Border.width 0, spacing 0, padding 5--, Background.color (rgba 0 0 0 1)
+                            Element.table [Border.width 0, spacing 0, padding 0, Background.color (rgb255 235 235 235)
                                 --, Font.color (rgba 1 1 1 1)
                                 --, Font.italic
                                 --, Font.size 32
