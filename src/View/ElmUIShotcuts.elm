@@ -98,3 +98,6 @@ far
     = Font.alignRight
 fac 
     = Font.center
+
+fc red green blue 
+    = Font.color <| rgb255 red green blue

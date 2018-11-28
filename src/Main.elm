@@ -258,11 +258,14 @@ optionsPanel model =
 
         canEnablePrintEstimateBtn = isAllJobStepsChecked model.jobSteps
 
-        enabledPrintEstimateBtnStyle = [ bc 226 63 63, Font.color <| rgb255 250 250 250]
+        -- enabledPrintEstimateBtnStyle = [ bc 226 63 63, Font.color <| rgb255 250 250 250]
 
-        disabledPrintEstimateBtnStyle = [ bc 198 201 206, Font.color <| rgb255 245 245 245]
+        -- disabledPrintEstimateBtnStyle = [ bc 198 201 206, Font.color <| rgb255 245 245 245]
 
-        printEstimateBtnStyle = if canEnablePrintEstimateBtn then enabledPrintEstimateBtnStyle else disabledPrintEstimateBtnStyle
+        printEstimateBtnStyle = if canEnablePrintEstimateBtn then 
+                                    [ bc 226 63 63, fc 250 250 250] 
+                                else
+                                    [ bc 198 201 206, fc 245 245 245]
 
         canShowExtraOptions =
                 model.jobSteps
