@@ -7,13 +7,15 @@ import Json.Decode as Decode
 import Http
 import Data.Difficulty exposing (..)
 import Data.Question exposing (..)
+import Array exposing (Array)
 
 type Msg
-    = VMRSContentIsRequired
+    = Start
+    | VMRSContentIsRequired
     | RB String
     | ShowVMRSCodes Bool
     | ShowParts Bool
-    | ShowJobStep Bool Int
+    | SelectJobStep Bool Int
     | SetComment String
     | PrintEstimate
     | ShowLaborRate Bool
@@ -26,6 +28,16 @@ type alias JobStep =
         ,vmrsCodes : List VMRS
         ,parts : List Part
         ,isPresentable : Bool
+    }
+
+type alias UIModel =
+    {   
+        showVMRSCodes : Bool
+        , showParts : Bool
+        , showLaborRate : Bool
+        , selectedChoice : String
+        , jobSteps : Array JobStep
+        , jobStepNumbers : Array Int
     }
 
 type alias VMRS =

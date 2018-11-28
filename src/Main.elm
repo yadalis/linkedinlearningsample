@@ -33,17 +33,13 @@ type alias RepairOrder =
         , engineModel : String
         , engineSerial : String
         , jobSteps : Array JobStep
-        , showVMRSCodes : Bool
-        , showParts : Bool
-        , showLaborRate : Bool
-        , selectedChoise : String
         , userComment : String
     }
 
-init : () -> (RepairOrder, Cmd Msg)
+init : () -> ( (RepairOrder, UIModel) , Cmd Msg)
 init _=
      ( 
-        {
+        ({
              repairOrderNumber = 30189
             , branchNumber = 20
             , branchDepartmentNumber = 370
@@ -147,58 +143,70 @@ init _=
                     --         False
                 ]
             )
-            , showVMRSCodes = False
+            , userComment = ""
+         },
+         {
+              showVMRSCodes = False
             , showParts = False
             , showLaborRate = True
-            , selectedChoise = "Tryo"
-            , userComment = ""
-         },Cmd.none)
+            , selectedChoice = "Gryo"
+            , jobSteps = Array.empty -- this is to capture selected jobsteps and send it to an API for saving the selections.
+            , jobStepNumbers = Array.empty -- this is to capture selected jobsteps numbers and send it to an API for saving the selections.
+         })
+         ,
+         sendMessage Start ) -- is this ok ? not sure... :)
+         --Cmd.none)
 
-
-update: Msg -> RepairOrder -> (RepairOrder, Cmd Msg)
-update msg model =
+update: Msg -> (RepairOrder, UIModel) -> ((RepairOrder, UIModel) , Cmd Msg)
+update msg (model,uiModel) =
     case msg of
+        Start ->
+            ( (model, {uiModel | jobSteps =  selectedJobSteps model.jobSteps, jobStepNumbers = getSelectedJobStepsNumbers model.jobSteps}), Cmd.none) 
+
         ShowVMRSCodes canShowVMRSCode ->
-            ( {model | showVMRSCodes = canShowVMRSCode}, Cmd.none)
+            ( (model, {uiModel | showVMRSCodes = canShowVMRSCode}), Cmd.none)
         
         ShowParts canShowParts ->
-            ( {model | showParts = canShowParts}, Cmd.none)
+            ( (model, {uiModel | showParts = canShowParts}), Cmd.none)
         
-        ShowLaborRate canLaborRate ->
-            ( {model | showLaborRate = canLaborRate}, Cmd.none)
+        ShowLaborRate canShowLaborRate ->
+            ( (model, {uiModel | showLaborRate = canShowLaborRate}), Cmd.none)
         
         RB str ->
-            ( {model | selectedChoise = str}, Cmd.none)
-        
-        SetComment str ->
-            ( {model | userComment = str}, Cmd.none)
+            ( (model, {uiModel  | selectedChoice = str}), Cmd.none)
 
-        ShowJobStep canShowJobStep index ->
-            ( -- First style
-             model.jobSteps
-                |> Array.get index
-                |> Maybe.map (\js -> {js | isPresentable = canShowJobStep})
-                |> Maybe.map (\js -> Array.set index js model.jobSteps)
-                |> Maybe.map (\arr -> {model | jobSteps = arr})
-                |> Maybe.withDefault model
-            , Cmd.none)
+        SetComment str ->
+            ( ({model | userComment = str}, uiModel), Cmd.none)
+
+        SelectJobStep userAction index ->
+            let
+                newModel = model.jobSteps
+                                |> Array.get index
+                                |> Maybe.map (\js -> {js | isPresentable = userAction})
+                                |> Maybe.map (\js -> Array.set index js model.jobSteps)
+                                |> Maybe.map (\updatedJobSteps -> {model | jobSteps = updatedJobSteps})
+                                |> Maybe.withDefault model
+            in
+                (
+                    (newModel , { uiModel | jobSteps =  selectedJobSteps newModel.jobSteps, jobStepNumbers = getSelectedJobStepsNumbers newModel.jobSteps} ), Cmd.none
+                )
 
         VMRSContentIsRequired  ->
-           ( model, Cmd.none)
+           ( (model, uiModel), Cmd.none)
         
         PrintEstimate  ->
-           ( model, Cmd.none)
+           ( (model, uiModel), Cmd.none)
             
-main: Program () RepairOrder Msg
+main: Program () (RepairOrder, UIModel) Msg
 main = 
      Browser.element { init = init, update = update, view = view, subscriptions = always Sub.none }
 
-view : RepairOrder -> Html Msg
-view  model =
+view : (RepairOrder, UIModel) -> Html Msg
+view  (model,uiModel) =
     layout [hf] <|
                    row[hf][
-                        optionsPanel model
-                        , estimatePanel model ]
+                        optionsPanel (model, uiModel)
+                        , estimatePanel (model, uiModel) ]
     -- HTM.div[][
     --      HTM.div [ 
     --             HTMLAttr.class  "flex bg-pink border-b-2 h-16 px-4 border-grey-lighter fixed  pin-t pin-x z-100 items-center   border-blue" ]
@@ -252,8 +260,12 @@ isAtleastOneJobStepsChecked jsList
                     |> selectedJobStepsCount
                     |> \count -> count > 0
 
-optionsPanel : RepairOrder -> Element Msg
-optionsPanel model =
+getSelectedJobStepsNumbers : Array JobStep -> Array Int
+getSelectedJobStepsNumbers jsList
+                = Array.map  (\jobStep -> jobStep.number) (selectedJobSteps jsList)
+
+optionsPanel : (RepairOrder, UIModel) -> Element Msg
+optionsPanel (model, uiModel) =
     let
         --ele = if (Array.length model.jobSteps) == Array.length (Array.filter (\js -> js.isPresentable == True) model.jobSteps ) then
         --canShowExtraOptions = Array.length (Array.filter (\jobStep -> jobStep.isPresentable) model.jobSteps )
@@ -283,25 +295,25 @@ optionsPanel model =
                                     Input.checkbox [bw 0 ] {
                                         onChange = ShowVMRSCodes
                                         ,icon = 
-                                                --buildChkBoxImage -- True/False gets passed to the flag parameter in buildChkBoxImage function automatically, if u need to pass
+                                                buildChkBoxImage -- True/False gets passed to the flag parameter in buildChkBoxImage function automatically, if u need to pass
                                                                     -- more than 1 parameter, then you need to do the below code
-                                                (\b ->
-                                                    buildChkBoxImage b)
-                                        , label = Input.labelLeft [alignRight] (el [] <| textValue (if model.showVMRSCodes then "Hide VMRS Codes" else "Show VMRS Codes"))
+                                                -- (\b ->
+                                                --     buildChkBoxImage b)
+                                        , label = Input.labelLeft [alignRight] (el [] <| textValue (if uiModel.showVMRSCodes then "Hide VMRS Codes" else "Show VMRS Codes"))
                                         --, label = Input.labelLeft [alignRight] (el [] <| none)
-                                        , checked = model.showVMRSCodes
+                                        , checked = uiModel.showVMRSCodes
                                     }
                                     ,Input.checkbox [bw 0 ]{
                                         onChange = ShowParts
                                         ,icon = buildChkBoxImage
-                                        , label = Input.labelLeft [alignRight] (el [] <| textValue (if model.showParts then "Hide Parts" else "Show Parts"))
-                                        , checked = model.showParts
+                                        , label = Input.labelLeft [alignRight] (el [] <| textValue (if uiModel.showParts then "Hide Parts" else "Show Parts"))
+                                        , checked = uiModel.showParts
                                     }
                                       ,Input.checkbox [bw 0 ]{
                                         onChange = ShowLaborRate
                                         ,icon = buildChkBoxImage
-                                        , label = Input.labelLeft [alignRight] (el [] <| textValue (if model.showLaborRate then "Hide Labor Rate" else "Show Labor Rate"))
-                                        , checked = model.showLaborRate
+                                        , label = Input.labelLeft [alignRight] (el [] <| textValue (if uiModel.showLaborRate then "Hide Labor Rate" else "Show Labor Rate"))
+                                        , checked = uiModel.showLaborRate
                                     }
                                     --                 ,text "asdf"
                                     -- ,text "asdf"
@@ -413,8 +425,8 @@ optionsPanel model =
             
         ]
 
-estimatePanel : RepairOrder -> Element Msg
-estimatePanel model =
+estimatePanel : (RepairOrder, UIModel) -> Element Msg
+estimatePanel (model, uiModel) =
         let
             jobStepsToShow =  Array.toList (selectedJobSteps model.jobSteps ) -- List.filter (\js -> js.isPresentable)  (Array.toList model.jobSteps)
         in
@@ -428,7 +440,7 @@ estimatePanel model =
                     ,customerInfoView model.customerName model.customerAddressLine1 model.customerAddressLine2 model.customerPhoneNumber
                     ,unitInfoView model
                     ,column[wf]
-                                    (List.map3 jobStepInfoView jobStepsToShow (List.repeat (Array.length model.jobSteps) model.showVMRSCodes ) (List.repeat (Array.length model.jobSteps) model.showParts ) )
+                                    (List.map3 jobStepInfoView jobStepsToShow (List.repeat (Array.length model.jobSteps) uiModel.showVMRSCodes ) (List.repeat (Array.length model.jobSteps) uiModel.showParts ) )
 
                     ,estimateNotesAndGrandTotalsView model
                 ]
@@ -437,24 +449,25 @@ estimatePanel model =
 jobStepOptions : Int -> JobStep -> Element Msg
 jobStepOptions index jobStep =
             Input.checkbox [bw 0 ] {
-                onChange = (\bool -> ShowJobStep bool index)
+                onChange = (\userAction -> SelectJobStep userAction index)
                 ,icon = buildChkBoxImage
                 , label = Input.labelLeft [alignRight] (el [] <| textValue (if jobStep.isPresentable then "Hide JobStep# " ++ String.fromInt jobStep.number else "Show JobStep# " ++ String.fromInt jobStep.number))
                 , checked = jobStep.isPresentable
             }
 
-buildChkBoxImage falg =
+buildChkBoxImage userAction =
         -- if falg == True then 
         --     image [centerY, hpx 24] {src = "uncheck.png", description ="Logo" } 
         -- else 
         --     image [centerY, hpx 24] {src = "check.png", description ="Logo" }
 
-        if falg == True then 
+        if userAction == True then 
             image [hpx 24] {src = "checked.png", description ="Logo" }
         else 
             el [hpx 24, wpx 24, bw 2, ElmStyleShotcuts.br 5] <| none
            
 -- this is just to send a message back in to update function when there are no side-effects needed and just a way to put the message back in to update function
+-- is this a good practice ?
 sendMessage : msg -> Cmd msg
 sendMessage msg =
     Task.succeed msg
