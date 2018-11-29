@@ -82,6 +82,20 @@ bc red green blue
     = Background.color <| rgb255 red green blue
 
 --Padding
+
+p16 = padding 16
+px16 = paddingXY 16 0
+py16 = paddingXY 0 16
+pdt16
+    = paddingEach    {edges | top = 16}
+pdr16
+    = paddingEach    {edges | right = 16}
+pdb16
+    = paddingEach    {edges | bottom = 16}
+pdl16
+    = paddingEach    {edges | left = 16}
+
+
 pd number
     = padding number
 pde top right bottom left

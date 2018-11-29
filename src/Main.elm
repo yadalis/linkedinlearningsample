@@ -203,7 +203,7 @@ main =
 
 view : (RepairOrder, UIModel) -> Html Msg
 view  (model,uiModel) =
-    layout [hf] <|
+    layout [hf, eId "rootx"] <|
                    row[hf][
                         optionsPanel (model, uiModel)
                         , estimatePanel (model, uiModel) ]
@@ -376,7 +376,7 @@ optionsPanel (model, uiModel) =
 
                     ,row[ wf, pdt 15]
                         [
-                            Input.button ( [wf, pdy 5, bw 2] ++ printEstimateBtnStyle)
+                            Input.button ( [wf, pdy 5, bw 2, eId "prntEst"] ++ printEstimateBtnStyle)
                                 { onPress = if canEnablePrintEstimateBtn then Just PrintEstimate else Nothing
                                 , label =  textValue <| String.toUpper "Print Estimate"
                                 }
@@ -430,7 +430,7 @@ estimatePanel (model, uiModel) =
         let
             jobStepsToShow =  Array.toList (selectedJobSteps model.jobSteps ) -- List.filter (\js -> js.isPresentable)  (Array.toList model.jobSteps)
         in
-            column [hf,  wfp 4,  pd 10, bwe 0 0 0 1]
+            column [hf,  wfp 4,  pd 10, bwe 0 0 0 1, eId "estimatePnl"]
             [
                 row[wf]
                     [roEstimateHeaderView model.repairOrderNumber]
